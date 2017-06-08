@@ -33,6 +33,9 @@
     - postgresql-contrib
     - postgresql-server-dev-all
     - python-psycopg2 # so that ansible can manage postgres users and dbs
+    - avahi-daemon
+    - avahi-utils
+    - libnss-mdns
 
 - name: apt-get clean
   command: apt-get -y clean
