@@ -15,6 +15,7 @@
     apt:
       pkg:
         - python3.6
+        - python3.6-dev
       state: installed
 
   - name: Create symlink /usr/local/bin/python3
