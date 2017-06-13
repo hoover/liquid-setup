@@ -24,6 +24,8 @@ Vagrant.configure(2) do |config|
       override.vm.synced_folder ".", "/home/vagrant/.VagrantSetup"
       override.vm.synced_folder "../../", "/home/vagrant/setup"
 
+      vbox.linked_clone = true
+
       # add time sync stuff
       vbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 500 ]
 
@@ -72,11 +74,23 @@ Vagrant.configure(2) do |config|
     sudo supervisorctl update
 
     sudo service nginx reload
+    sudo supervisorctl restart all
 
     SHELL
   end
 
+  config.vm.network "private_network", type: "dhcp"
+
   # provisioning (currently provider-agnostic)
-  config.vm.provision "shell", privileged: false, name: "Install dependencies", inline: create_provision_command_set("vagrant-box-one.liquid")
+  config.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-base")
+
+  # rerun provisioning for each machine
+  config.vm.define "one" do |machine|
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-one.liquid")
+  end
+
+  config.vm.define "two" do |machine|
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-two.liquid")
+  end
 
 end
