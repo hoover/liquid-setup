@@ -33,8 +33,9 @@ Vagrant.configure(2) do |config|
   # proider-specific configuration
   configure_vbox_provider(config)
 
-  # provisioning (currently provider-agnostic)
-  config.vm.provision "shell", privileged: false, name: "Install dependencies", inline: <<-SHELL
+  def create_provision_command_set(hostname)
+    <<-SHELL
+
     # set up locale
     export LC_ALL="en_US.UTF-8"
     export LANG="en_US.UTF-8"
@@ -57,7 +58,7 @@ Vagrant.configure(2) do |config|
 
     # fill out the liquid_domain and run ansible
     touch vars/config.yml
-    echo "liquid_domain: 'vagrant-box-one.liquid'" > vars/config.yml
+    echo "liquid_domain: '#{hostname}'" > vars/config.yml
     sudo ansible-playbook server.yml
 
     # pull the liquid-core version that runs zeroconf
@@ -72,6 +73,10 @@ Vagrant.configure(2) do |config|
 
     sudo service nginx reload
 
-  SHELL
+    SHELL
+  end
+
+  # provisioning (currently provider-agnostic)
+  config.vm.provision "shell", privileged: false, name: "Install dependencies", inline: create_provision_command_set("vagrant-box-one.liquid")
 
 end
