@@ -11,12 +11,11 @@ Vagrant.configure(2) do |config|
   # tell apt-get not to expect a tty
   ENV['DEBIAN_FRONTEND']="noninteractive"
 
+  config.vm.box = "bento/ubuntu-16.04"
+
   # provider-specific configurations
   def configure_vbox_provider(config)
     config.vm.provider :virtualbox do |vbox, override|
-
-      override.vm.box = "bento/ubuntu-16.04"
-
       override.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
 
       # this maps the current folder to a hidden folder in the vagrant user's
@@ -81,16 +80,19 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "private_network", type: "dhcp"
 
-  # provisioning (currently provider-agnostic)
-  config.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-base")
-
   # rerun provisioning for each machine
   config.vm.define "one" do |machine|
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-one.liquid")
   end
 
   config.vm.define "two" do |machine|
+    machine.vm.box = "liquid-zeroconf"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-two.liquid")
+  end
+
+  config.vm.define "three" do |machine|
+    machine.vm.box = "liquid-zeroconf"
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-three.liquid")
   end
 
 end
