@@ -82,22 +82,23 @@ Vagrant.configure(2) do |config|
   config.vm.define "one" do |machine|
     # the first machine is used to create the box, so it starts from the ubuntu image
     machine.vm.box = "bento/ubuntu-16.04"
+    # machine.vm.box = "liquid-zeroconf"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-one.liquid")
-    machine.vm.network "public_network", ip: "10.0.2.20", bridge: "en0: Wi-Fi (AirPort)"
+    machine.vm.network "private_network", ip: "10.0.0.20", virtualbox__intnet: true
   end
 
   config.vm.define "two" do |machine|
     # the second machine is created from the box packaged from the first machine
     machine.vm.box = "liquid-zeroconf"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-two.liquid")
-    machine.vm.network "public_network", ip: "10.0.2.27", bridge: "en0: Wi-Fi (AirPort)"
+    machine.vm.network "private_network", ip: "10.0.0.27", virtualbox__intnet: true
   end
 
   config.vm.define "three" do |machine|
     # same as above
     machine.vm.box = "liquid-zeroconf"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-three.liquid")
-    machine.vm.network "public_network", ip: "10.0.2.23", bridge: "en0: Wi-Fi (AirPort)"
+    machine.vm.network "private_network", ip: "10.0.0.23", virtualbox__intnet: true
   end
 
 end
