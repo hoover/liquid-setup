@@ -91,3 +91,7 @@
 - name: nginx default site html page
   template: src=nginx/index.html
             dest=/var/www/html/index.html
+
+- name: Create avahi-daemon service
+  template: src=avahi/liquid.service
+            dest=/etc/avahi/services/liquid.service
