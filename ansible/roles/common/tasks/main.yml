@@ -38,11 +38,6 @@
     - libnss-mdns
     - dnsmasq
 
-- name: Don't run dnsmasq as system service
-  service:
-    name: dnsmasq
-    enabled: no
-
 - name: apt-get clean
   command: apt-get -y clean
 
@@ -105,3 +100,22 @@
 - name: Create avahi-daemon service
   template: src=avahi/liquid.service
             dest=/etc/avahi/services/liquid.service
+
+- name: Create global config file for dnsmasq
+  template: src=dnsmasq.conf
+            dest=/etc/dnsmasq.conf
+
+- name: Create /var/liquid directory
+  file: path=/var/liquid state=directory owner=liquid group=liquid
+
+- name: Create /var/liquid/dns directory
+  file: path=/var/liquid/dns state=directory owner=liquid group=liquid
+
+- name: Create empty server list for dnsmasq
+  file: path=/var/liquid/dns/dns.conf state=touch owner=liquid group=liquid
+
+- name: Don't run dnsmasq as system service
+  service:
+    name: dnsmasq
+    enabled: no
+
