@@ -37,6 +37,7 @@
     - avahi-utils
     - libnss-mdns
     - dnsmasq
+    - inotify-tools # for reloading dnsmasq
 
 - name: apt-get clean
   command: apt-get -y clean
@@ -119,3 +120,14 @@
     name: dnsmasq
     enabled: no
 
+- name: Create the /opt/libexec folder
+  file: path=/opt/libexec state=directory
+
+- name: Create the /opt/libexec/dnsmasq
+  template: src=libexec/reload-dnsmasq
+            dest=/opt/libexec/reload-dnsmasq
+            mode=755
+
+- name: Create the supervisor config for the dnsmasq reloader
+  template: src=supervisor/reload-dnsmasq.conf
+            dest=/etc/supervisor/conf.d/reload-dnsmasq.conf
