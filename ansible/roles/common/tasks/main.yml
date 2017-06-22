@@ -36,6 +36,12 @@
     - avahi-daemon
     - avahi-utils
     - libnss-mdns
+    - dnsmasq
+
+- name: Don't run dnsmasq as system service
+  service:
+    name: dnsmasq
+    enabled: no
 
 - name: apt-get clean
   command: apt-get -y clean
