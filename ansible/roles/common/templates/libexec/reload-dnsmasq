@@ -1,8 +1,6 @@
 #!/bin/sh
 while inotifywait -e modify /var/liquid/dns/dns.conf; do
-    if [ -f /var/run/dnsmasq/dnsmasq.pid ]; then
-        kill -HUP `cat /var/run/dnsmasq/dnsmasq.pid`
-    fi
+    systemctl restart dnsmasq
     sleep 1
 done
 
