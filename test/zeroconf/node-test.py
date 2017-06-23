@@ -26,7 +26,7 @@ def test_dns_addresses():
     for node in RIGHT_IP_ADDRESSES:
         addr = dig_for(node)
         expected = RIGHT_IP_ADDRESSES[node]
-        if addr != expected:
+        if node != hostname and addr != expected:
              print("Error in getting record for", node, ": was expecting addr =", expected, "but found addr =", addr)
              return False
 
