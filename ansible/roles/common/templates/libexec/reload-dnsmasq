@@ -1,5 +1,0 @@
-#!/bin/sh
-while inotifywait -e modify /var/liquid/dns/dns.conf; do
-    systemctl restart dnsmasq
-done
-
