@@ -116,3 +116,5 @@
     name: dnsmasq
     enabled: no
 
+- name: Enable "sudo dnsmasq" for user liquid
+  shell: echo "liquid ALL=(ALL) NOPASSWD: `which dnsmasq`" > /etc/sudoers.d/liquid-dnsmasq
