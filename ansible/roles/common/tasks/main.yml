@@ -79,7 +79,11 @@
             dest=/etc/nginx/sites-enabled/default
 
 - name: remove default nginx site html page
-  shell: rm -f /var/www/html/index*html
+  file:
+    path: "/var/www/html/{{ item }}"
+    state: absent
+  with_fileglob:
+    - "index.*.html"
 
 - name: nginx default site html page
   template: src=nginx/index.html
