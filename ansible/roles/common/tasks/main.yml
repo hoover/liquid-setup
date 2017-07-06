@@ -16,6 +16,12 @@
     line: '127.0.0.1 {{ liquid_domain.split(".")[0] }}'
     state: present
 
+- name: Put liquid_domain in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ liquid_domain }}'
+    state: present
+
 - name: Install base packages
   apt: name={{ item }} state=latest
   with_items:
