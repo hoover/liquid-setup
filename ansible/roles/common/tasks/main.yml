@@ -115,6 +115,7 @@
   service:
     name: dnsmasq
     enabled: no
+    state: stopped
 
 - name: Enable "sudo dnsmasq" for user liquid
-  shell: echo "liquid ALL=(ALL) NOPASSWD: `which dnsmasq`" > /etc/sudoers.d/liquid-dnsmasq
+  shell: 'echo "liquid ALL=(ALL) NOPASSWD: `which dnsmasq`" > /etc/sudoers.d/liquid-dnsmasq'
