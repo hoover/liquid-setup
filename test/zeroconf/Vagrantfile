@@ -1,0 +1,107 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  # Fix passthrough of bad locale
+  ENV['LC_ALL']="en_US.UTF-8"
+  ENV['LANG']="en_US.UTF-8"
+  ENV['LANGUAGE']="en_US.UTF-8"
+
+  # tell apt-get not to expect a tty
+  ENV['DEBIAN_FRONTEND']="noninteractive"
+
+  # provider-specific configurations
+  def configure_vbox_provider(config)
+    config.vm.provider :virtualbox do |vbox, override|
+      override.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
+
+      # this maps the current folder to a hidden folder in the vagrant user's
+      # home directory
+      override.vm.synced_folder "../../", "/home/vagrant/setup"
+
+      vbox.linked_clone = true
+
+      # add time sync stuff
+      vbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 500 ]
+
+      vbox.memory = 1280
+      vbox.cpus = 1
+
+    end
+  end
+
+  # proider-specific configuration
+  configure_vbox_provider(config)
+
+  def create_provision_command_set(hostname)
+    <<-SHELL
+
+    set -e
+    set -x
+
+    # set up locale
+    export LC_ALL="en_US.UTF-8"
+    export LANG="en_US.UTF-8"
+    export LANGUAGE="en_US.UTF-8"
+    sudo locale-gen en_US.UTF-8
+
+    # install dependencies
+    sudo apt-get update
+    sudo apt-get install -y software-properties-common python-software-properties
+    sudo apt-add-repository ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install -y ansible git
+
+    # get liquidinvestigations/setup ansible scripts
+    ls $HOME/ansible-copy && sudo rm -rf $HOME/ansible-copy
+    cp -a $HOME/setup/ansible $HOME/ansible-copy
+    cd $HOME/ansible-copy
+
+    # fill out the liquid_domain and run ansible
+    touch vars/config.yml
+    echo "liquid_domain: '#{hostname}'" > vars/config.yml
+    sudo ansible-playbook server.yml
+
+    # pull the liquid-core version that runs zeroconf
+    cd /opt/liquid-core/liquid-core
+    sudo git checkout use-zeroconf-multiple-interfaces
+    sudo git pull
+    # install additional requirements
+    sudo bash -c 'cd /opt/liquid-core/liquid-core; source ../venv/bin/activate; pip install -r requirements.txt'
+
+    sudo /opt/common/boot.sh
+
+    sudo systemctl restart nginx
+    sudo systemctl restart avahi-daemon
+
+    sudo supervisorctl update
+    sudo supervisorctl restart all
+
+    echo "DONE!"
+
+    SHELL
+  end
+
+  config.vm.define "one" do |machine|
+    machine.vm.box = "liquid"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-one.liquid")
+    machine.vm.network "private_network", ip: "10.0.0.20", virtualbox__intnet: true
+  end
+
+  config.vm.define "two" do |machine|
+    machine.vm.box = "liquid"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-two.liquid")
+    machine.vm.network "private_network", ip: "10.0.0.27", virtualbox__intnet: true
+  end
+
+  config.vm.define "three" do |machine|
+    machine.vm.box = "liquid"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
+    machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-three.liquid")
+    machine.vm.network "private_network", ip: "10.0.0.23", virtualbox__intnet: true
+  end
+
+end

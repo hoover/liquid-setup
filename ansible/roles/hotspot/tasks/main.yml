@@ -5,16 +5,10 @@
     - wireless-tools
     - bridge-utils
     - hostapd
-    - dnsmasq
 
 - name: Don't run hostapd as system service
   service:
     name: hostapd
-    enabled: no
-
-- name: Don't run dnsmasq as system service
-  service:
-    name: dnsmasq
     enabled: no
 
 - name: Create the hotspot folder

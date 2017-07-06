@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+
+<service-group>
+
+  <name>li-{{ liquid_domain | regex_replace('\\.', '-') }}</name>
+
+  <service>
+    <type>_liquid._tcp</type>
+    <port>666</port>
+    <txt-record>liquid_hostname={{ liquid_domain }}</txt-record>
+  </service>
+
+</service-group>

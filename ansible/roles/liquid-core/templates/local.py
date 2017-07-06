@@ -19,3 +19,4 @@ HYPOTHESIS_USER_SCRIPTS = {
 
 HOOVER_APP_URL = 'http://hoover.{{ liquid_domain }}'
 HYPOTHESIS_APP_URL = 'http://hypothesis.{{ liquid_domain }}'
+LIQUID_DOMAIN = '{{ liquid_domain }}'

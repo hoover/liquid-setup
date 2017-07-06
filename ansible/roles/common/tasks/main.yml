@@ -16,6 +16,12 @@
     line: '127.0.0.1 {{ liquid_domain.split(".")[0] }}'
     state: present
 
+- name: Put liquid_domain in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ liquid_domain }}'
+    state: present
+
 - name: Install base packages
   apt: name={{ item }} state=latest
   with_items:
@@ -33,6 +39,10 @@
     - postgresql-contrib
     - postgresql-server-dev-all
     - python-psycopg2 # so that ansible can manage postgres users and dbs
+    - avahi-daemon
+    - avahi-utils
+    - libnss-mdns
+    - dnsmasq
 
 - name: apt-get clean
   command: apt-get -y clean
@@ -88,3 +98,17 @@
 - name: nginx default site html page
   template: src=nginx/index.html
             dest=/var/www/html/index.html
+
+- name: Configure avahi-daemon
+  template: src=avahi/avahi-daemon.conf
+            dest=/etc/avahi/avahi-daemon.conf
+
+- name: Create avahi-daemon service
+  template: src=avahi/liquid.service
+            dest=/etc/avahi/services/liquid.service
+
+- name: Don't run dnsmasq as system service
+  service:
+    name: dnsmasq
+    enabled: no
+    state: stopped
