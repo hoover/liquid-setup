@@ -8,12 +8,12 @@
 
 - name: Set up machine hostname
   hostname:
-    name: "{{ liquid_domain }}"
+    name: "{{ liquid_domain.split('.')[0] }}"
 
 - name: Put hostname in /etc/hosts
   lineinfile:
     path: /etc/hosts
-    line: '127.0.0.1 {{ liquid_domain }}'
+    line: '127.0.0.1 {{ liquid_domain.split(".")[0] }}'
     state: present
 
 - name: Install base packages
