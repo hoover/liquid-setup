@@ -60,8 +60,8 @@
     remote_src: yes
     creates: /opt/hypothesis/elasticsearch-1.7.2
 
-- name: Write the elasticsearch configuration file
-  template: src=elasticsearch-config/elasticsearch.yml
+- name: Copy the elasticsearch configuration file
+  template: src=elasticsearch.yml
             dest=/opt/hypothesis/elasticsearch-1.7.2/config/elasticsearch.yml
 
 - name: Change ownership of data and logs folders
@@ -74,6 +74,7 @@
   with_items:
     - data
     - logs
+    - config
 
 - name: Install elasticsearch ICU plugin
   command: bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.7.0
@@ -98,14 +99,6 @@
   template: src=libexec/run-h
             dest=/opt/hypothesis/libexec/run-h
             mode=755
-
-- name: Create the supervisor configuration file
-  template: src=supervisor/hypothesis.conf
-            dest=/etc/supervisor/conf.d/hypothesis.conf
-
-- name: Create the nginx configuration file
-  template: src=nginx/hypothesis.conf
-            dest=/etc/nginx/sites-enabled/hypothesis.conf
 
 - name: Subscribe to hooks
   template:

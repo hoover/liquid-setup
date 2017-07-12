@@ -3,15 +3,14 @@
   hosts: image
   vars:
     build_docker_images: false
-  vars_files:
-    - vars/defaults.yml
-    - vars/config.yml
+    devel: false
   roles:
     - common
     - devel
     - docker
     - node6
     - python3
+    - systeml
     - liquid-core
     - hotspot
     - hoover

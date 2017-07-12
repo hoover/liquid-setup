@@ -38,9 +38,6 @@
     environment:
       HOOVER_HOME: "/opt/hoover"
       HOOVER_BOOTSTRAP_NO_DB: "True"
-      HOOVER_ALLOWED_HOSTS: "hoover.{{ liquid_domain }}"
-      HOOVER_ES_URL: "http://localhost:14352"
-      HOOVER_TIKA_URL: "http://localhost:15423"
     args:
       executable: /bin/bash
       chdir: /opt
@@ -58,8 +55,8 @@
     remote_src: yes
     creates: /opt/hoover/elasticsearch-2.4.3
 
-- name: Write the elasticsearch configuration file
-  template: src=elasticsearch-config/elasticsearch.yml
+- name: Copy the elasticsearch configuration file
+  template: src=elasticsearch.yml
             dest=/opt/hoover/elasticsearch-2.4.3/config/elasticsearch.yml
 
 - name: Change ownership of elasticsearch data and logs folders
@@ -74,14 +71,6 @@
   get_url:
     dest: /opt/hoover/
     url: http://apache.javapipe.com/tika/tika-server-1.16.jar
-
-- name: Create the supervisor configuration file
-  template: src=supervisor/hoover.conf
-            dest=/etc/supervisor/conf.d/hoover.conf
-
-- name: Create the nginx configuration file
-  template: src=nginx/hoover.conf
-            dest=/etc/nginx/sites-enabled/hoover.conf
 
 - name: Create the libexec folder
   file: path=/opt/hoover/libexec state=directory mode=0755
@@ -119,6 +108,18 @@
     repo: https://github.com/hoover/testdata.git
     dest: /opt/hoover/testdata
 
-- name: Create the testing_local.py config for snoop
-  template: src=hoover-snoop-config/testing_local.py
-            dest=/opt/hoover/snoop/snoop/site/settings/testing_local.py
+- name: Link the testing_local.py config for snoop
+  file: state=link force=yes
+        src=/var/lib/liquid/conf/hoover/snoop-settings-testing.py
+        dest=/opt/hoover/snoop/snoop/site/settings/testing_local.py
+
+- name: Link the local.py config for snoop
+  file: state=link force=yes
+        src=/var/lib/liquid/conf/hoover/snoop-settings.py
+        dest=/opt/hoover/snoop/snoop/site/settings/local.py
+
+- name: Link the local.py config for search
+  file: state=link force=yes
+        src=/var/lib/liquid/conf/hoover/search-settings.py
+        dest=/opt/hoover/search/hoover/site/settings/local.py
+

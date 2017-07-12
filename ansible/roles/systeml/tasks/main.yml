@@ -1,0 +1,14 @@
+---
+- name: Create the top folder
+  file: path=/opt/systeml state=directory mode=0755
+
+- name: Download the source code
+  git: repo=https://github.com/liquidinvestigations/systeml.git
+       dest=/opt/systeml/systeml
+       version=initial-proposal
+
+- name: Install requirements
+  pip:
+    requirements: /opt/systeml/systeml/requirements.txt
+    virtualenv: /opt/systeml/venv
+    virtualenv_python: python3

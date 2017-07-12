@@ -1,11 +1,29 @@
 ---
-- include: tasks/docker.yml
+- name: Create folder
+  file:
+    path: /opt/dokuwiki
+    state: directory
+    mode: 0755
 
-- name: Create supervisor config
-  template: src=supervisor/dokuwiki.conf
-            dest=/etc/supervisor/conf.d/dokuwiki.conf
+- when: ansible_architecture == 'x86_64'
+  set_fact:
+    dokuwiki_docker_tag: 'latest'
 
-- name: Create nginx config
+- when: ansible_architecture in ['armv7l', 'aarch64']
+  set_fact:
+    dokuwiki_docker_tag: 'latest-arm32v6'
+
+- name: Write compose file
   template:
-    src: nginx/dokuwiki.conf
-    dest: /etc/nginx/sites-enabled/dokuwiki.conf
+    # `src` is a relative path because this file is included
+    # directly from `image_host_docker.yml`, not as a role.
+    src: ../templates/docker-compose.yml
+    dest: /opt/dokuwiki/docker-compose.yml
+    mode: 644
+
+- name: Build docker image
+  when: build_docker_images
+  docker_service:
+    project_src: /opt/dokuwiki
+    build: true
+    stopped: true

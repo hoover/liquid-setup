@@ -3,9 +3,6 @@
   hosts: local
   vars:
     build_docker_images: true
-  vars_files:
-    - vars/defaults.yml
-    - vars/config.yml
   roles:
     - docker
   tasks:

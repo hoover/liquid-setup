@@ -6,11 +6,6 @@
   git: repo=https://github.com/liquidinvestigations/core.git
        dest=/opt/liquid-core/liquid-core
 
-- name: Create the configuration file
-  template: src=local.py
-            dest=/opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
-            mode=755
-
 - name: Install requirements
   pip:
     requirements: /opt/liquid-core/liquid-core/requirements.txt
@@ -22,11 +17,6 @@
     path: /opt/liquid-core/var
     state: directory
 
-- name: Run migrations
-  shell: ../venv/bin/python ./manage.py migrate
-  args:
-    chdir: /opt/liquid-core/liquid-core
-
 - name: Change ownership of var folder
   file:
     path: /opt/liquid-core/var
@@ -34,10 +24,28 @@
     recurse: yes
     owner: liquid
 
+- name: Create dummy configuration file
+  file: state=touch
+        dest=/opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
+
 - name: Collect django static files
   shell: ../venv/bin/python ./manage.py collectstatic --noinput
   args:
     chdir: /opt/liquid-core/liquid-core
+
+- name: Run migrations
+  shell: ../venv/bin/python ./manage.py migrate
+  args:
+    chdir: /opt/liquid-core/liquid-core
+
+- name: Remove dummy configuration file
+  file: state=absent
+        dest=/opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
+
+- name: Link the configuration file
+  file: state=link force=yes
+        src=/var/lib/liquid/conf/liquid-core/settings.py
+        dest=/opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
 
 - name: Create the libexec folder
   file: path=/opt/liquid-core/libexec state=directory mode=0755
@@ -47,20 +55,17 @@
             dest=/opt/liquid-core/libexec/runserver
             mode=755
 
-- name: Create the supervisor configuration file
-  template: src=supervisor/liquid-core.conf
-            dest=/etc/supervisor/conf.d/liquid-core.conf
+- name: Create the h_user_create script
+  template: src=libexec/h_user_create
+            dest=/opt/liquid-core/libexec/h_user_create
+            mode=755
 
-- name: Create the nginx configuration file
-  template: src=nginx/liquid-core.conf
-            dest=/etc/nginx/sites-enabled/liquid-core.conf
+- name: Create the h_user_passwd script
+  template: src=libexec/h_user_passwd
+            dest=/opt/liquid-core/libexec/h_user_passwd
+            mode=755
 
-- name: Create folders for hooks
-  file:
-    path: /opt/common/hooks/{{ item }}.d
-    state: directory
-    mode: 0755
-  with_items:
-    - user-created
-    - user-deleted
-    - user-passwd
+- name: Create the h_user_delete script
+  template: src=libexec/h_user_delete
+            dest=/opt/liquid-core/libexec/h_user_delete
+            mode=755

@@ -4,6 +4,14 @@ set -x
 
 date
 
+systemctl enable supervisor
+
+echo 'running systeml configuration generation...'
+/opt/systeml/venv/bin/python /opt/systeml/systeml/confs.py
+
+echo 'starting supervisor...'
+systemctl start supervisor
+
 supervisor_up() {
   ! supervisorctl status | grep -q 'supervisor\.sock no such file'
 }
