@@ -16,8 +16,6 @@ function wait_url {
     done
 }
 
-supervisorctl start hoover-elasticsearch
-
 # create and migrate dbs
 sudo -u liquid bash <<EOF
 set -x
@@ -53,6 +51,7 @@ set -x
 EOF
 
 supervisorctl stop hoover-tika
+supervisorctl start hoover-elasticsearch
 
 # wait after hoover's elasticsearch
 es_url="http://localhost:14352"
@@ -82,7 +81,3 @@ set -x
 cd /opt/hoover/snoop
 #py.test
 EOF
-
-# Start services now, and autostart on subsequent boots
-supervisorctl start hoover-elasticsearch hoover-search hoover-snoop hoover-tika
-sed -i '/autostart = false/d' /etc/supervisor/conf.d/hoover.conf

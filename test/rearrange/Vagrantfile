@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  # Fix passthrough of bad locale
+  ENV['LC_ALL']="en_US.UTF-8"
+  ENV['LANG']="en_US.UTF-8"
+  ENV['LANGUAGE']="en_US.UTF-8"
+
+  # tell apt-get not to expect a tty
+  ENV['DEBIAN_FRONTEND']="noninteractive"
+
+  config.vm.provider :virtualbox do |vbox, override|
+    override.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
+    override.vm.synced_folder "../../../", "/vagrant/repos"
+
+    vbox.linked_clone = true
+
+    # add time sync stuff
+    vbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 500 ]
+
+    vbox.memory = 1024 * 3
+    vbox.cpus = 2
+
+  end
+
+  config.vm.box = "liquid"
+  config.vm.box_url = "http://liquidinvestigations.com/images/nightly/oldversions/liquid-20170721-x86_64-vbox.box"
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    set -e
+    set -x
+
+    # set up locale
+    export LC_ALL="en_US.UTF-8"
+    export LANG="en_US.UTF-8"
+    export LANGUAGE="en_US.UTF-8"
+    sudo locale-gen en_US.UTF-8
+
+    # install dependencies
+    ( which ansible ) || ( \
+        sudo apt-get update; \
+        sudo apt-get install -y software-properties-common python-software-properties; \
+        sudo apt-add-repository ppa:ansible/ansible; \
+        sudo apt-get update; \
+        sudo apt-get install -y ansible \
+    )
+
+    # run ansible
+    cd /vagrant/repos/setup/ansible
+    sudo ansible-playbook server.yml
+
+    if [ ! -e /opt/systeml/systeml/config.yml ]; then
+        sudo ln -s  /vagrant/config.yml /opt/systeml/systeml/config.yml
+    fi
+
+    sudo /opt/common/initialize.sh
+
+    echo "DONE!"
+  SHELL
+
+end
