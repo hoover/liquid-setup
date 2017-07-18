@@ -8,8 +8,6 @@ set -e
 
 SETUPDIR=/mnt/shared/setup
 TARGET=/mnt/target
-TEMPDIR=/tmp
-OUTPUT=/mnt/shared/output
 IMAGE=/mnt/shared/ubuntu-x86_64-raw.img
 
 set -x
