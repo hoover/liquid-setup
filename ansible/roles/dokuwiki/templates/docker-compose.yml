@@ -3,7 +3,7 @@ version: "2"
 services:
 
   dokuwiki:
-    image: istepanov/dokuwiki:2.0
+    image: liquidinvestigations/dokuwiki:{{ dokuwiki_docker_tag }}
     volumes:
       - dokuwiki:/var/dokuwiki-storage
     ports:

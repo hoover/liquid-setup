@@ -5,6 +5,14 @@
     state: directory
     mode: 0755
 
+- when: ansible_architecture == 'x86_64'
+  set_fact:
+    dokuwiki_docker_tag: 'latest'
+
+- when: ansible_architecture in ['armv7l', 'aarch64']
+  set_fact:
+    dokuwiki_docker_tag: 'latest-arm32v6'
+
 - name: Write compose file
   template:
     # `src` is a relative path because this file is included
