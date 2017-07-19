@@ -22,6 +22,7 @@ losetup /dev/loop0 $IMAGE -o 135266304
 mkdir -p $TARGET
 mount /dev/loop0 $TARGET
 mount --bind /proc $TARGET/proc
+rm -f $TARGET/etc/resolv.conf
 echo "nameserver 8.8.8.8" > $TARGET/etc/resolv.conf
 
 chroot $TARGET apt-get update
