@@ -31,6 +31,11 @@ chroot $TARGET apt-get clean
 
 cd $SETUPDIR/ansible
 touch vars/config.yml
+ansible-playbook image_host_docker.yml
+
+service docker stop
+cp -a /var/lib/docker $TARGET/var/lib/docker
+
 ansible-playbook image_chroot.yml
 
 umount $TARGET/proc
