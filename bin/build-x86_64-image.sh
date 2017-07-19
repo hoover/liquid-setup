@@ -16,10 +16,6 @@ apt-add-repository -y ppa:ansible/ansible
 apt-get update
 apt-get install -y ansible git qemu-utils
 
-cd $SETUPDIR/ansible
-touch vars/config.yml
-ansible-playbook image_host_docker.yml
-
 curl https://liquidinvestigations.org/images/base_images/ubuntu-16.04-server-cloudimg-amd64-disk1.img > /mnt/shared/ubuntu-x86_64-cow2.img
 qemu-img convert -f qcow2 -O raw /mnt/shared/ubuntu-x86_64-cow2.img $IMAGE
 
@@ -41,6 +37,10 @@ touch $TARGET/etc/cloud/cloud-init.disabled
 chroot $TARGET apt-get update
 chroot $TARGET apt-get install -y python
 chroot $TARGET apt-get clean
+
+cd $SETUPDIR/ansible
+touch vars/config.yml
+ansible-playbook image_host_docker.yml
 
 service docker stop
 cp -a /var/lib/docker $TARGET/var/lib/docker
