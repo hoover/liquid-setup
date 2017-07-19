@@ -9,7 +9,6 @@ set -e
 SETUPDIR=/mnt/shared/setup
 TARGET=/mnt/target
 IMAGE=/mnt/shared/ubuntu-odroid_c2-raw.img
-OUTPUT=/mnt/shared/output
 
 set -x
 
@@ -37,5 +36,4 @@ umount $TARGET/proc
 umount $TARGET
 losetup -d /dev/loop0
 
-mkdir -p $OUTPUT
-pv < $TEMPDIR/odroid-c2.img | xz -0 > $OUTPUT/odroid-c2-liquid.img.xz
+echo "done; image saved in $IMAGE"
