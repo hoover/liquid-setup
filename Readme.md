@@ -93,3 +93,25 @@ The `devel` role sets up the following:
 - sshd on port 22 that accepts password authentication
 
 The `devel` role can be enabled by putting `devel: true` into `vars/config.yml`.
+
+### Docker
+Some applications are installed as Docker containers. This is done to simplify
+image creation and to separate the concern of app management from the concern
+of system management.
+
+Since the Liquid project targets X86_64 and ARM 32/64 architectures, we need
+Docker images for all. Docker hub is a great place to get X86_64 images, but
+the ARM image ecosystem is young, so we have to build our own images there.
+Therefore, we maintain a Docker organization,
+[liquidinvestigations](https://hub.docker.com/r/liquidinvestigations/), where
+we publish x86_64 and arm32v6 images. We use the arm32v6 images on 64-bit ARM
+platforms too, for simplicity.
+
+In order to run Docker images on our target systems, we need dockerd and
+docker-compose, and docker images for each app. The docker
+[docker](ansible/roles/docker) role installs the required system packages. For
+Docker images, in the "Set up on existing server" mode, they just get installed
+normally. But for the "Build an OS image" scenaro, Docker can't run in a
+chroot, so we pull the app images on the host system (by running the
+[`image_host_docker.yml`](ansible/image_host_docker.yml) playbook), and copy
+them over to the target chroot volume.
