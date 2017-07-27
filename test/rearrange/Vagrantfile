@@ -25,10 +25,8 @@ Vagrant.configure(2) do |config|
 
   end
 
-  config.vm.box = "xenial-server-cloudimg-amd64"
-  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
-  #config.vm.box = "liquid"
-  #config.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
+  config.vm.box = "liquid"
+  config.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     set -e
     set -x
