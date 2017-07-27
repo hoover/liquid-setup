@@ -7,6 +7,8 @@ if [ ! -f first_boot_done ]; then
   touch first_boot_done
 fi
 
+systemctl start postgresql
+
 supervisorctl start nginx
 supervisorctl start avahi-daemon
 supervisorctl start liquid-core
