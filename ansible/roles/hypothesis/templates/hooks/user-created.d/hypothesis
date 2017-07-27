@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-liquid_domain="{{ liquid_domain }}"
+source /var/lib/liquid/conf/liquid_domain.sh
 
 username="$1"
 password="$2"
-EMAIL="$username@$liquid_domain"
+EMAIL="$username@$LIQUID_DOMAIN"
 
 unset DJANGO_SETTINGS_MODULE
 exec /opt/hypothesis/libexec/run-h bin/hypothesis user add \
