@@ -34,11 +34,16 @@ psql hypothesis -c 'create extension if not exists "uuid-ossp";'
 source venv/bin/activate
 cd h
 export DATABASE_URL="postgresql:///hypothesis"
-export APP_URL="http://hypothesis.{{ liquid_domain }}"
 export ELASTICSEARCH_HOST="http://127.0.0.1:14312"
+source /var/lib/liquid/conf/hypothesis/run-h-vars.sh
 bin/hypothesis init
 EOF
 
-# Start remaining services now, and autostart on subsequent boots
-supervisorctl start hypothesis-beat hypothesis-web hypothesis-websocket hypothesis-worker
-sed -i '/autostart = false/d' /etc/supervisor/conf.d/hypothesis.conf
+# Run the UI bake script
+bash <<EOF
+cd /opt/hypothesis/h-client-build
+source /var/lib/liquid/conf/hypothesis/run-h-vars.sh
+./bake.py
+EOF
+
+supervisorctl stop hypothesis-elasticsearch

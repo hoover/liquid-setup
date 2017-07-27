@@ -10,15 +10,17 @@
     - dnsmasq
     - python3-dev
 
-- name: Configure avahi-daemon
-  template:
-    src: avahi/avahi-daemon.conf
-    dest: /etc/avahi/avahi-daemon.conf
+- name: Clear the system avahi-daemon service dir
+  file:
+    state: absent
+    path: /etc/avahi/services
 
-- name: Create avahi-daemon service
-  template:
-    src: avahi/liquid.service
-    dest: /etc/avahi/services/liquid.service
+- name: Link the avahi-daemon service dir
+  file:
+    state: link
+    force: yes
+    src: /var/lib/liquid/conf/discover/services
+    dest: /etc/avahi/services
 
 - name: Don't run dnsmasq as system service
   service:
@@ -36,9 +38,11 @@
     repo: https://github.com/liquidinvestigations/discover.git
     dest: /opt/discover/discover
 
-- name: Create the configuration file
-  template:
-    src: local.py
+- name: Link the configuration file
+  file:
+    state: link
+    force: yes
+    src: /var/lib/liquid/conf/discover/settings.py
     dest: /opt/discover/discover/settings/local.py
 
 - name: Install requirements for discover
@@ -59,11 +63,6 @@
     dest: /opt/discover/libexec/runserver
     mode: 0755
 
-- name: Create the supervisor conf for discover
-  template:
-    src: supervisor/discover.conf
-    dest: /etc/supervisor/conf.d/discover.conf
-
 - name: Create /var/lib/liquid/conf/discover directory
   file:
     path: /var/lib/liquid/conf/discover
@@ -78,3 +77,4 @@
   service:
     name: avahi-daemon
     enabled: no
+    state: stopped
