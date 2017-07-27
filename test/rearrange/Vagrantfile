@@ -26,7 +26,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.box = "liquid"
-  config.vm.box_url = "http://liquidinvestigations.com/images/liquid-20170630-x86_64-vbox.box"
+  config.vm.box_url = "http://liquidinvestigations.com/images/nightly/oldversions/liquid-20170721-x86_64-vbox.box"
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     set -e
     set -x
