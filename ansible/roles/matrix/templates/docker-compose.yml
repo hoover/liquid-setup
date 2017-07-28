@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+
+  matrix:
+    image: silviof/docker-matrix
+    volumes:
+      - data:/data
+    ports:
+      - 55156:8008
+
+volumes:
+  data: {}

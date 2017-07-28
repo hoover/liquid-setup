@@ -1,0 +1,29 @@
+---
+- include: tasks/docker.yml
+
+- name: Create supervisor config
+  copy:
+    src: supervisor/matrix.conf
+    dest: /etc/supervisor/conf.d/matrix.conf
+
+- name: Create nginx config
+  template:
+    src: nginx/matrix.conf
+    dest: /etc/nginx/sites-enabled/matrix.conf
+
+- name: Create the libexec folder
+  file:
+    path: /opt/matrix/libexec
+    state: directory
+    mode: 0755
+
+- name: Create shell configuration file
+  template:
+    src: libexec/setenv.sh
+    dest: /opt/matrix/libexec/setenv.sh
+
+- name: Create the initialization script
+  copy:
+    src: initialize.d/matrix
+    dest: /opt/common/initialize.d/matrix
+    mode: 0755

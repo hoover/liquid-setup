@@ -1,0 +1,21 @@
+---
+- name: Create folder
+  file:
+    path: /opt/matrix
+    state: directory
+    mode: 0755
+
+- name: Write compose file
+  template:
+    # `src` is a relative path because this file is included
+    # directly from `image_host_docker.yml`, not as a role.
+    src: ../templates/docker-compose.yml
+    dest: /opt/matrix/docker-compose.yml
+    mode: 644
+
+- name: Build docker image
+  when: build_docker_images
+  docker_service:
+    project_src: /opt/matrix
+    build: true
+    stopped: true

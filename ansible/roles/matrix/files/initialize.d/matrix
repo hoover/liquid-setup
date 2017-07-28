@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+cd /opt/matrix
+source libexec/setenv.sh
+set -x
+exec docker-compose run --rm \
+  -e SERVER_NAME="matrix.$LIQUID_DOMAIN" \
+  -e REPORT_STATS=no \
+  matrix generate
