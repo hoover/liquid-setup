@@ -1,6 +1,8 @@
 ---
 - include: tasks/docker.yml
 
+- include: tasks/authproxy.yml
+
 - name: Create supervisor config
   copy:
     src: supervisor/davros.conf

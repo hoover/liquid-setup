@@ -1,0 +1,12 @@
+---
+
+- name: Copy authproxy folder
+  copy:
+    src: authproxy/
+    dest: /opt/davros/authproxy/
+
+- name: Install authproxy requirements
+  pip:
+    requirements: /opt/davros/authproxy/requirements.txt
+    virtualenv: /opt/davros/authproxy/venv
+    virtualenv_python: python3
