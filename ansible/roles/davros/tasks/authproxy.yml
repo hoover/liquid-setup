@@ -10,3 +10,8 @@
     requirements: /opt/davros/authproxy/requirements.txt
     virtualenv: /opt/davros/authproxy/venv
     virtualenv_python: python3
+
+- name: Create authproxy basename config
+  template:
+    src: authproxy/config/basename.py
+    dest: /opt/davros/authproxy/config/basename.py
