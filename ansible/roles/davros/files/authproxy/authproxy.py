@@ -83,6 +83,19 @@ def callback():
     return flask.redirect('/')
 
 
+LOGGED_OUT = """\
+<!doctype html>
+<p>You have been logged out.</p>
+<p><a href="/">home</a></p>
+"""
+
+
+@app.route('/__auth/logout')
+def logout():
+    flask.session.pop('access_token', None)
+    return LOGGED_OUT
+
+
 if __name__ == '__main__':
     import waitress
     waitress.serve(app, host='127.0.0.1', port=32437)
