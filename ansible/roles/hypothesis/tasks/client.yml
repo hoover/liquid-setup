@@ -1,7 +1,8 @@
 ---
 - name: Download pre-built client code
-  git: repo=https://github.com/liquidinvestigations/h-client-build.git
-       dest=/opt/hypothesis/h-client-build
+  git:
+    repo: https://github.com/liquidinvestigations/h-client-build.git
+    dest: /opt/hypothesis/h-client-build
 
 - name: Bake the boot script
   environment:
@@ -12,5 +13,6 @@
     chdir: /opt/hypothesis/h-client-build
 
 - name: Create the nginx configuration file
-  template: src=nginx/hypothesis-client.conf
-            dest=/etc/nginx/sites-enabled/hypothesis-client.conf
+  template:
+    src: nginx/hypothesis-client.conf
+    dest: /etc/nginx/sites-enabled/hypothesis-client.conf

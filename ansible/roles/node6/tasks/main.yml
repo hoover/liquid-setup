@@ -21,7 +21,10 @@
 - when: ansible_architecture == 'aarch64'
   block:
   - name: Create node_6.x folder
-    file: path=/opt/node_6.x state=directory mode=0755
+    file:
+      path: /opt/node_6.x
+      state: directory
+      mode: 0755
 
   - name: Download nodejs v6.10.2
     unarchive:
@@ -42,7 +45,10 @@
 - when: ansible_architecture == 'armv7l'
   block:
   - name: Create node_6.x folder
-    file: path=/opt/node_6.x state=directory mode=0755
+    file:
+      path: /opt/node_6.x
+      state: directory
+      mode: 0755
 
   - name: Download nodejs v6.10.2
     unarchive:

@@ -1,15 +1,20 @@
 ---
 - name: Create the top folder
-  file: path=/opt/liquid-core state=directory mode=0755
+  file:
+    path: /opt/liquid-core
+    state: directory
+    mode: 0755
 
 - name: Download the source code
-  git: repo=https://github.com/liquidinvestigations/core.git
-       dest=/opt/liquid-core/liquid-core
+  git:
+    repo: https://github.com/liquidinvestigations/core.git
+    dest: /opt/liquid-core/liquid-core
 
 - name: Create the configuration file
-  template: src=local.py
-            dest=/opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
-            mode=755
+  template:
+    src: local.py
+    dest: /opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
+    mode: 0755
 
 - name: Install requirements
   pip:
@@ -40,25 +45,32 @@
     chdir: /opt/liquid-core/liquid-core
 
 - name: Create the libexec folder
-  file: path=/opt/liquid-core/libexec state=directory mode=0755
+  file:
+    path: /opt/liquid-core/libexec
+    state: directory
+    mode: 0755
 
 - name: Create the runserver script
-  template: src=libexec/runserver
-            dest=/opt/liquid-core/libexec/runserver
-            mode=755
+  template:
+    src: libexec/runserver
+    dest: /opt/liquid-core/libexec/runserver
+    mode: 0755
 
 - name: Create the create-oauth-application script
-  template: src=libexec/create-oauth-application
-            dest=/opt/liquid-core/libexec/create-oauth-application
-            mode=755
+  template:
+    src: libexec/create-oauth-application
+    dest: /opt/liquid-core/libexec/create-oauth-application
+    mode: 0755
 
 - name: Create the supervisor configuration file
-  template: src=supervisor/liquid-core.conf
-            dest=/etc/supervisor/conf.d/liquid-core.conf
+  template:
+    src: supervisor/liquid-core.conf
+    dest: /etc/supervisor/conf.d/liquid-core.conf
 
 - name: Create the nginx configuration file
-  template: src=nginx/liquid-core.conf
-            dest=/etc/nginx/sites-enabled/liquid-core.conf
+  template:
+    src: nginx/liquid-core.conf
+    dest: /etc/nginx/sites-enabled/liquid-core.conf
 
 - name: Create the /var/lib/liquid/oauth_keys directory
   file:
@@ -66,15 +78,17 @@
     state: directory
     owner: liquid
     group: liquid
-    mode: "700"
+    mode: 0700
 
 - name: Create the initialization script
-  template: src=initialize.d/liquid-core.sh
-            dest=/opt/common/initialize.d/00-liquid-core.sh
-            mode=755
+  template:
+    src: initialize.d/liquid-core.sh
+    dest: /opt/common/initialize.d/00-liquid-core.sh
+    mode: 0755
 
 - name: Create the devel initialization script
   when: devel
-  template: src=initialize.d/liquid-core-devel.sh
-            dest=/opt/common/initialize.d/80-liquid-core-initial-user.sh
-            mode=755
+  template:
+    src: initialize.d/liquid-core-devel.sh
+    dest: /opt/common/initialize.d/80-liquid-core-initial-user.sh
+    mode: 0755

@@ -1,6 +1,8 @@
 ---
 - name: Install required packages
-  apt: name={{ item }} state=latest
+  apt:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - build-essential
     - python2.7-dev

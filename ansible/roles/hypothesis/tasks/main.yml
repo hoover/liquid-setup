@@ -1,18 +1,24 @@
 ---
 - name: Install system dependencies
-  apt: name={{ item }} state=latest
+  apt:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - python2.7-dev
     - rabbitmq-server
     - libffi-dev
 
 - name: Create the top folder
-  file: path=/opt/hypothesis state=directory mode=0755
+  file:
+    path: /opt/hypothesis
+    state: directory
+    mode: 0755
 
 - name: Download the source code
-  git: repo=https://github.com/hypothesis/h.git
-       dest=/opt/hypothesis/h
-       version=53046f652c801b85e792c0020fa71f7493b249da
+  git:
+    repo: https://github.com/hypothesis/h.git
+    dest: /opt/hypothesis/h
+    version: 53046f652c801b85e792c0020fa71f7493b249da
 
 - name: Change ownership of h folder
   file:
@@ -61,8 +67,9 @@
     creates: /opt/hypothesis/elasticsearch-1.7.2
 
 - name: Write the elasticsearch configuration file
-  template: src=elasticsearch-config/elasticsearch.yml
-            dest=/opt/hypothesis/elasticsearch-1.7.2/config/elasticsearch.yml
+  template:
+    src: elasticsearch-config/elasticsearch.yml
+    dest: /opt/hypothesis/elasticsearch-1.7.2/config/elasticsearch.yml
 
 - name: Change ownership of data and logs folders
   file:
@@ -82,30 +89,38 @@
     creates: /opt/hypothesis/elasticsearch-1.7.2/plugins/analysis-icu
 
 - name: Create the initialization script
-  template: src=initialize.d/hypothesis.sh
-            dest=/opt/common/initialize.d/23-hypothesis.sh
-            mode=755
+  template:
+    src: initialize.d/hypothesis.sh
+    dest: /opt/common/initialize.d/23-hypothesis.sh
+    mode: 0755
 
 - name: Create the libexec folder
-  file: path=/opt/hypothesis/libexec state=directory mode=0755
+  file:
+    path: /opt/hypothesis/libexec
+    state: directory
+    mode: 0755
 
 - name: Create the elasticsearch run script
-  template: src=libexec/elasticsearch
-            dest=/opt/hypothesis/libexec/elasticsearch
-            mode=755
+  template:
+    src: libexec/elasticsearch
+    dest: /opt/hypothesis/libexec/elasticsearch
+    mode: 0755
 
 - name: Create the hypothesis run helper
-  template: src=libexec/run-h
-            dest=/opt/hypothesis/libexec/run-h
-            mode=755
+  template:
+    src: libexec/run-h
+    dest: /opt/hypothesis/libexec/run-h
+    mode: 0755
 
 - name: Create the supervisor configuration file
-  template: src=supervisor/hypothesis.conf
-            dest=/etc/supervisor/conf.d/hypothesis.conf
+  template:
+    src: supervisor/hypothesis.conf
+    dest: /etc/supervisor/conf.d/hypothesis.conf
 
 - name: Create the nginx configuration file
-  template: src=nginx/hypothesis.conf
-            dest=/etc/nginx/sites-enabled/hypothesis.conf
+  template:
+    src: nginx/hypothesis.conf
+    dest: /etc/nginx/sites-enabled/hypothesis.conf
 
 - name: Create folders for hooks
   file:

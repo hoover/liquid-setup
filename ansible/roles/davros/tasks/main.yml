@@ -17,4 +17,4 @@
   template:
     src: initialize.d/davros.sh
     dest: /opt/common/initialize.d/20-davros.sh
-    mode: 755
+    mode: 0755

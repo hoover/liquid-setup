@@ -1,6 +1,8 @@
 ---
 - name: Install wireless packages
-  apt: name={{ item }} state=latest
+  apt:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - wireless-tools
     - bridge-utils
@@ -13,12 +15,16 @@
     enabled: no
 
 - name: Create the hotspot folder
-  file: path=/opt/hotspot state=directory mode=0755
+  file:
+    path: /opt/hotspot
+    state: directory
+    mode: 0755
 
 - name: Create the boot script
-  template: src=boot.py
-            dest=/opt/hotspot/boot.py
-            mode=755
+  template:
+    src: boot.py
+    dest: /opt/hotspot/boot.py
+    mode: 0755
 
 - name: Start hotspot on boot
   lineinfile:

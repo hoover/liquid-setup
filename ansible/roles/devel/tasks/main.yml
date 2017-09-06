@@ -1,7 +1,10 @@
 ---
-- block:
+- when: devel
+  block:
     - name: Install development packages
-      apt: name={{ item }} state=latest
+      apt:
+        name: "{{ item }}"
+        state: latest
       with_items:
         - tmux
         - sudo
@@ -20,8 +23,7 @@
       command: adduser liquid sudo
 
     - name: Permit password sshd auth
-      lineinfile: path=/etc/ssh/sshd_config
-                  regexp="PasswordAuthentication"
-                  line="PasswordAuthentication yes"
-  when: devel == true
-
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "PasswordAuthentication"
+        line: "PasswordAuthentication yes"

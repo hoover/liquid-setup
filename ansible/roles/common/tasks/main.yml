@@ -23,7 +23,9 @@
     state: present
 
 - name: Install base packages
-  apt: name={{ item }} state=latest
+  apt:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - curl
     - git
@@ -54,8 +56,9 @@
     shell: /bin/bash
 
 - name: Create the supervisor global config
-  template: src=supervisor/supervisor.conf
-            dest=/etc/supervisor/supervisor.conf
+  template:
+    src: supervisor/supervisor.conf
+    dest: /etc/supervisor/supervisor.conf
 
 - name: Create /var/lib/liquid directory
   file:
@@ -68,20 +71,28 @@
     state: directory
 
 - name: Create common folder
-  file: path=/opt/common state=directory mode=0755
+  file:
+    path: /opt/common
+    state: directory
+    mode: 0755
 
 - name: Create the initialization script
-  template: src=initialize.sh
-            dest=/opt/common/initialize.sh
-            mode=755
+  template:
+    src: initialize.sh
+    dest: /opt/common/initialize.sh
+    mode: 0755
 
 - name: Create folder for init scripts of other modules
-  file: path=/opt/common/initialize.d state=directory mode=0755
+  file:
+    path: /opt/common/initialize.d
+    state: directory
+    mode: 0755
 
 - name: Create the boot script
-  template: src=boot.sh
-            dest=/opt/common/boot.sh
-            mode=755
+  template:
+    src: boot.sh
+    dest: /opt/common/boot.sh
+    mode: 0755
 
 - name: Start boot script
   lineinfile:
@@ -96,8 +107,9 @@
     line: '	server_names_hash_bucket_size 64;'
 
 - name: nginx default site conf
-  template: src=nginx/default
-            dest=/etc/nginx/sites-enabled/default
+  template:
+    src: nginx/default
+    dest: /etc/nginx/sites-enabled/default
 
 - name: remove default nginx site html page
   file:
@@ -107,8 +119,9 @@
     - "index.*.html"
 
 - name: nginx default site html page
-  template: src=nginx/index.html
-            dest=/var/www/html/index.html
+  template:
+    src: nginx/index.html
+    dest: /var/www/html/index.html
 
 - name: Create /opt/common/libexec directory
   file:
