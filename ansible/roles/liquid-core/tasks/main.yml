@@ -27,11 +27,6 @@
     path: /opt/liquid-core/var
     state: directory
 
-- name: Run migrations
-  shell: ../venv/bin/python ./manage.py migrate
-  args:
-    chdir: /opt/liquid-core/liquid-core
-
 - name: Change ownership of var folder
   file:
     path: /opt/liquid-core/var
