@@ -9,5 +9,3 @@ DNSMASQ_INTERFACE = None
 # Flask debug
 DEBUG = False
 # Flask secret key
-
-from .secret_key import SECRET_KEY
