@@ -16,6 +16,12 @@
     dest: /opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
     mode: 0755
 
+- name: Create the secret_key file
+  copy:
+    src: secret_key.py
+    dest: /opt/liquid-core/liquid-core/liquidcore/site/settings/secret_key.py
+    mode: 0755
+
 - name: Install requirements
   pip:
     requirements: /opt/liquid-core/liquid-core/requirements.txt

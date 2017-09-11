@@ -1,4 +1,3 @@
-SECRET_KEY = '{{ liquid_core_secret_key }}'
 DEBUG = True
 ALLOWED_HOSTS = ['{{ liquid_domain }}']
 AUTH_PASSWORD_VALIDATORS = []
@@ -20,3 +19,5 @@ MATRIX_APP_URL = 'http://matrix.{{ liquid_domain }}'
 DAVROS_APP_URL = 'http://davros.{{ liquid_domain }}'
 LIQUID_DOMAIN = '{{ liquid_domain }}'
 DISCOVERY_URL = 'http://localhost:13777'
+
+from .secret_key import SECRET_KEY
