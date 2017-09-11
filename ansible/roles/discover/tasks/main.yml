@@ -36,6 +36,13 @@
     repo: https://github.com/liquidinvestigations/discover.git
     dest: /opt/discover/discover
 
+- name: Touch the secret_key.py config for discover
+  file:
+    dest: /opt/discover/discover/settings/secret_key.py
+    owner: liquid
+    group: liquid
+    state: touch
+
 - name: Create the configuration file
   template:
     src: local.py
@@ -57,6 +64,12 @@
   template:
     src: libexec/runserver
     dest: /opt/discover/libexec/runserver
+    mode: 0755
+
+- name: Create the initialization script
+  copy:
+    src: initialize.d/discover.sh
+    dest: /opt/common/initialize.d/25-discover.sh
     mode: 0755
 
 - name: Create the supervisor conf for discover

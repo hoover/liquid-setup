@@ -1,5 +1,4 @@
 liquid_domain: liquid.local
 devel: false
-discover_secret_key: "-- secret key here --"
 davros_authproxy_secret_key: "-- secret key here --"
 use_https: false
