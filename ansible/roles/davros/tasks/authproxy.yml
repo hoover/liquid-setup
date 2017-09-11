@@ -17,9 +17,9 @@
     dest: /opt/davros/authproxy/config/basename.py
 
 - name: Create authproxy secret key config
-  template:
-    src: authproxy/config/secret.py
+  file:
     dest: /opt/davros/authproxy/config/secret.py
+    state: touch
 
 - name: Create authproxy oauth keys config
   file:
