@@ -91,3 +91,9 @@
   service:
     name: avahi-daemon
     enabled: no
+
+- name: Use localhost as first nameserver
+  lineinfile:
+    line: 'nameserver 127.0.0.1'
+    state: present
+    path: /etc/resolvconf/resolv.conf.d/head

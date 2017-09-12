@@ -46,9 +46,6 @@ Vagrant.configure(2) do |config|
     export LANGUAGE="en_US.UTF-8"
     sudo locale-gen en_US.UTF-8
 
-    sudo supervisorctl stop hoover-tika
-    sudo supervisorctl stop hoover-elasticsearch
-
     # install dependencies
     ( which ansible && which git ) || ( \
         sudo apt-get update; \
@@ -58,10 +55,13 @@ Vagrant.configure(2) do |config|
         sudo apt-get install -y ansible git \
     )
 
+    sudo supervisorctl update
+    sudo supervisorctl stop all
+
     # fill out the liquid_domain and run ansible
     cd $HOME/setup/ansible
     echo "liquid_domain: '#{hostname}'" > vars/config.yml
-    echo "devel: true" > vars/config.yml
+    echo "devel: true" >> vars/config.yml
     sudo ansible-playbook server.yml
 
     # pull the liquid-core version that runs zeroconf
@@ -78,22 +78,22 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "one" do |machine|
-    machine.vm.box = "liquid-sept-12"
-    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170912-x86_64-vbox.box"
+    machine.vm.box = "liquid-sept-13"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170913-x86_64-vbox.box"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-one.liquid")
     machine.vm.network "private_network", ip: "10.0.0.20", virtualbox__intnet: true
   end
 
   config.vm.define "two" do |machine|
-    machine.vm.box = "liquid-sept-12"
-    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170912-x86_64-vbox.box"
+    machine.vm.box = "liquid-sept-13"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170913-x86_64-vbox.box"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-two.liquid")
     machine.vm.network "private_network", ip: "10.0.0.27", virtualbox__intnet: true
   end
 
   config.vm.define "three" do |machine|
-    machine.vm.box = "liquid-sept-12"
-    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170912-x86_64-vbox.box"
+    machine.vm.box = "liquid-sept-13"
+    machine.vm.box_url = "http://liquidinvestigations.com/images/nightly/liquid-20170913-x86_64-vbox.box"
     machine.vm.provision "shell", privileged: false, inline: create_provision_command_set("vagrant-box-three.liquid")
     machine.vm.network "private_network", ip: "10.0.0.23", virtualbox__intnet: true
   end

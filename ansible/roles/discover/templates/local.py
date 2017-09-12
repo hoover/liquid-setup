@@ -7,5 +7,4 @@ LIQUID_DOMAIN = "{{ liquid_domain }}"
 DNSMASQ_INTERFACE = None
 
 # Flask debug
-DEBUG = False
-# Flask secret key
+DEBUG = {% if devel %}True{% else %}False{% endif %}

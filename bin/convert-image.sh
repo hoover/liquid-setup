@@ -105,6 +105,9 @@ if [ "$FORMAT" = virtualbox ]; then
     echo -e "auto enp0s3\nallow-hotplug enp0s3\niface enp0s3 inet dhcp" > $TARGET/etc/network/interfaces.d/enp0s3.cfg
 fi
 
+# Bring back original DNS
+mv $TARGET/etc/resolv.conf.orig $TARGET/etc/resolv.conf
+
 # Unmount image before conversion
 chroot $TARGET apt-get clean
 umount $TARGET/proc
