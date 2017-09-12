@@ -1,8 +1,11 @@
 # Don't bind to the https port
-no_tls: False
+no_tls: True
 
+tls_certificate_path: "/opt/matrix/synapse/unused-certificate.tls.crt"
+tls_private_key_path: "/opt/matrix/synapse/unused-certificate.tls.key"
+tls_dh_params_path:   "/opt/matrix/synapse/unused-certificate.tls.dh"
 tls_fingerprints: []
-
+signing_key_path: "/opt/matrix/synapse/unused-certificate.signing.key"
 
 ## Server ##
 
@@ -29,7 +32,7 @@ listeners:
   # For when matrix traffic passes through loadbalancer that unwraps TLS.
   - port: 55156
     tls: false
-    bind_addresses: ['0.0.0.0']
+    bind_addresses: ['127.0.0.1']
     type: http
 
     x_forwarded: true
@@ -59,7 +62,7 @@ verbose: 0
 log_file: "/opt/matrix/synapse/homeserver.log"
 
 # A yaml python logging config file
-log_config: "/opt/matrix/synapse/matrix.{{ liquid_domain }}.log.config"
+log_config: "/opt/matrix/synapse/homeserver.log.config"
 
 
 ## Ratelimiting ##
@@ -193,14 +196,6 @@ bcrypt_rounds: 12
 # accessible to anonymous users.
 allow_guest_access: False
 
-# The list of identity servers trusted to verify third party
-# identifiers by this server.
-trusted_third_party_id_servers:
-    - matrix.org
-    - vector.im
-    - riot.im
-
-
 ## Metrics ###
 
 # Enable collection and rendering of performance metrics
@@ -221,40 +216,10 @@ room_invite_state_types:
 # A list of application service config file to use
 app_service_config_files: []
 
-
-macaroon_secret_key: "-- secret key goes here --"
+macaroon_secret_key: "{{ 999999999 | random | to_uuid }}"
 
 # Used to enable access token expiration.
 expire_access_token: False
-
-## Signing Keys ##
-
-# Path to the signing key to sign messages with
-signing_key_path: "/opt/matrix/synapse/matrix.{{ liquid_domain }}.signing.key"
-
-# The keys that the server used to sign messages with but won't use
-# to sign new messages. E.g. it has lost its private key
-old_signing_keys: {}
-#  "ed25519:auto":
-#    # Base64 encoded public key
-#    key: "The public part of your old signing key."
-#    # Millisecond POSIX timestamp when the key expired.
-#    expired_ts: 123456789123
-
-# How long key response published by this server is valid for.
-# Used to set the valid_until_ts in /key/v2 APIs.
-# Determines how quickly servers will query to check which keys
-# are still valid.
-key_refresh_interval: "1d" # 1 Day.
-
-# The trusted servers to download signing keys from.
-perspectives:
-  servers:
-    "matrix.org":
-      verify_keys:
-        "ed25519:auto":
-          key: "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw"
-
 
 # Enable password for login.
 password_config:
@@ -262,20 +227,3 @@ password_config:
    # Uncomment and change to a secret random string for extra security.
    # DO NOT CHANGE THIS AFTER INITIAL SETUP!
    #pepper: ""
-
-
-# password_providers:
-#     - module: "ldap_auth_provider.LdapAuthProvider"
-#       config:
-#         enabled: true
-#         uri: "ldap://ldap.example.com:389"
-#         start_tls: true
-#         base: "ou=users,dc=example,dc=com"
-#         attributes:
-#            uid: "cn"
-#            mail: "email"
-#            name: "givenName"
-#         #bind_dn:
-#         #bind_password:
-#         #filter: "(objectClass=posixAccount)"
-

@@ -45,6 +45,12 @@
     chdir: /opt/matrix/synapse
     creates: /opt/matrix/synapse/homeserver.yaml
 
+- name: Move generated logging configuration
+  shell: mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.log.config /opt/matrix/synapse/homeserver.log.config
+
+- name: Move away generated tls certificates
+  shell: for ext in tls.crt tls.key tls.dh signing.key; do mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.$ext /opt/matrix/synapse/unused-certificate.$ext; done
+
 - name: Overwrite the configuration file
   template:
     src: homeserver.yaml
