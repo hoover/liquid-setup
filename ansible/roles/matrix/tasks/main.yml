@@ -45,9 +45,19 @@
     chdir: /opt/matrix/synapse
     creates: /opt/matrix/synapse/homeserver.yaml
 
+# The "synapse.app.homeserver ...  --generate-config" from the previous task
+# auto-creates a bunch of files named after the hostname.  Additionally,
+# Matrix expects all these certificates and configurations to always be
+# somewhere, even if they're not used. And that default path is created by
+# appending an extension to the hostname.
+
+# The 'ls' checks for the destination log configuration. If it's there, that
+# means the `Run default configuration` task did not run this pass (because of
+# the `creates` directive), and so we don't move anything.
 - name: Move generated logging configuration
   shell: ls /opt/matrix/synapse/homeserver.log.config || mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.log.config /opt/matrix/synapse/homeserver.log.config
 
+# Same as above, but for all the unused security certificates.
 - name: Move away generated tls certificates
   shell: for ext in tls.crt tls.key tls.dh signing.key; do (ls /opt/matrix/synapse/unused-certificate.$ext || mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.$ext /opt/matrix/synapse/unused-certificate.$ext0); done
 
