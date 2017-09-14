@@ -184,7 +184,8 @@ turn_allow_guests: True
 ## Registration ##
 
 # Enable registration for new users.
-enable_registration: False
+enable_registration: True
+registration_shared_secret: "{{ 999999999 | random | to_uuid }}"
 
 # Set the number of bcrypt rounds used to generate password hash.
 # Larger numbers increase the work factor needed to generate the hash.
