@@ -1,4 +1,19 @@
 #!/bin/bash
 set -e
 
-echo "Matrix just works, man"
+echo "Matrix just works, man. Let's just start it now..."
+supervisorctl start matrix
+
+function wait_url {
+    X=0
+    until $(curl --output /dev/null --silent --head --fail $1); do
+        sleep 3
+        ((X=X+1))
+        if [[ $X -gt 20 ]]; then
+            echo "wait_url: $1 timed out" >&2
+            exit 1;
+        fi
+    done
+}
+
+wait_url 'http://127.0.0.1:55156'

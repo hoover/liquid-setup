@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import json
+import os
+[username] = sys.argv[1:]
+
+print("Matrix users cannot be deleted, only deactivated.")

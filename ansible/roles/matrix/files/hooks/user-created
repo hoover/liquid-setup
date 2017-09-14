@@ -3,8 +3,9 @@
 import json
 import os
 import sys
-password = json.loads(os.environ['LIQUID_HOOK_DATA'])['password']
+
 [username] = sys.argv[1:]
+password = json.loads(os.environ['LIQUID_HOOK_DATA'])['password']
 
 cmd = [
     "/opt/matrix/synapse/bin/python",
@@ -16,4 +17,3 @@ cmd = [
     "http://localhost:55156",
 ]
 os.execv(cmd[0], cmd)
-

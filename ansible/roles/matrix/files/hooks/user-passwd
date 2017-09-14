@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import json
+import subprocess
+
+db_path = '/opt/matrix/synapse/homeserver.db'
+
+[username] = sys.argv[1:]
+password = json.loads(os.environ['LIQUID_HOOK_DATA'])['password']
+
+cmd_password_hash = [
+    "/opt/matrix/synapse/bin/python",
+    "/opt/matrix/synapse/local/bin/hash_password",
+    "--config", "/opt/matrix/synapse/homeserver.yaml",
+    "--password", password,
+]
+password_hash = subprocess.check_output(cmd_password_hash).decode('latin-1')
+
+# matrix stores users with a name = @username:domain.
+# since we don't run federations, we use a LIKE to ignore the domain
+sql_template = "UPDATE users SET password_hash='{}' WHERE name LIKE '@{}:%';"
+sql_change_password = sql_template.format(password_hash, username)
+
+cmd_change_password = [
+    "sqlite3",
+    db_path,
+    sql_change_password,
+]
+
+result = subprocess.check_output(cmd_change_password)
+print("result", result, "password for user", username, "changed.")

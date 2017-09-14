@@ -22,11 +22,13 @@
 
 - name: Subscribe to hooks
   copy:
-    src: hooks/user
+    src: hooks/{{ item }}
     dest: /opt/common/hooks/{{ item }}.d/matrix
     mode: 0755
   with_items:
     - user-created
+    - user-passwd
+    - user-deleted
 
 - name: Copy the requirements file
   copy:
