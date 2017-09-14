@@ -122,16 +122,6 @@
     src: nginx/hypothesis.conf
     dest: /etc/nginx/sites-enabled/hypothesis.conf
 
-- name: Create folders for hooks
-  file:
-    path: /opt/common/hooks/{{ item }}.d
-    state: directory
-    mode: 0755
-  with_items:
-    - user-created
-    - user-deleted
-    - user-passwd
-
 - name: Subscribe to hooks
   copy:
     src: hooks/user

@@ -17,16 +17,6 @@
     dest: /opt/common/initialize.d/21-dokuwiki.sh
     mode: 0755
 
-- name: Create folders for hooks
-  file:
-    path: /opt/common/hooks/{{ item }}.d
-    state: directory
-    mode: 0755
-  with_items:
-    - user-created
-    - user-deleted
-    - user-passwd
-
 - name: Subscribe to hooks
   copy:
     src: hooks/user
