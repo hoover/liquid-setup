@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# changes password for matrix user by calculating the hash
+# and entering it into the database following
+# https://github.com/matrix-org/synapse/blob/master/README.rst#password-reset
+
+# TODO right now, script assumes user exists and fails silently if it doesn't.
+
 import os
 import sys
 import json
@@ -30,4 +36,5 @@ cmd_change_password = [
 ]
 
 result = subprocess.check_output(cmd_change_password)
-print("result", result, "password for user", username, "changed.")
+# TODO check if updated 1 user
+print("password for user", username, "changed.")
