@@ -4,4 +4,8 @@ import json
 import os
 [username] = sys.argv[1:]
 
+# TODO call the deactivate API like here:
+# https://github.com/matrix-org/matrix-doc/blob/master/api/client-server/registration.yaml#L304
+
 print("Matrix users cannot be deleted, only deactivated.")
+print("Matrix user deactivation not implemented.")
