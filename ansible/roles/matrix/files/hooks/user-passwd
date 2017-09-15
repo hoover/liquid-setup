@@ -23,6 +23,7 @@ cmd_password_hash = [
     "--password", password,
 ]
 password_hash = subprocess.check_output(cmd_password_hash).decode('latin-1')
+password_hash = password_hash.strip()
 
 # matrix stores users with a name = @username:domain.
 # since we don't run federations, we use a LIKE to ignore the domain
