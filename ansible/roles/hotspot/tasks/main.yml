@@ -23,12 +23,5 @@
 - name: Create the boot script
   template:
     src: boot.py
-    dest: /opt/hotspot/boot.py
+    dest: /opt/common/hooks/on-boot.d/hotspot.py
     mode: 0755
-
-- name: Start hotspot on boot
-  lineinfile:
-    dest: /etc/rc.local
-    insertbefore: "exit 0"
-    line: "/opt/hotspot/boot.py >> /var/log/rc.local.log 2>&1"
-

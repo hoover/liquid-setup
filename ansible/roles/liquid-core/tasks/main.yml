@@ -75,16 +75,6 @@
     group: liquid
     mode: 0700
 
-- name: Create folders for hooks
-  file:
-    path: /opt/common/hooks/{{ item }}.d
-    state: directory
-    mode: 0755
-  with_items:
-    - user-created
-    - user-deleted
-    - user-passwd
-
 - name: Create the initialization script
   template:
     src: initialize.d/liquid-core.sh

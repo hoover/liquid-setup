@@ -10,6 +10,17 @@
     path: /opt/common/hooks
     state: directory
 
+- name: Create folders for hooks
+  file:
+    path: /opt/common/hooks/{{ item }}.d
+    state: directory
+    mode: 0755
+  with_items:
+    - user-created
+    - user-deleted
+    - user-passwd
+    - on-boot
+
 - name: Configure sudo rights for liquid
   copy:
     src: sudoers.d/liquid-hooks
