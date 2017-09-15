@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+printf '\n\n=== INITIALIZE HOOVER ===\n\n'
 set -x
 
 cd /opt/hoover

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+printf '\n\n=== INITIALIZE LIQUID-CORE ===\n\n'
 set -x
 
 if [ -z $(grep -q "-- placeholder --" /opt/liquid-core/liquid-core/liquidcore/site/settings/secret_key.py) ]; then

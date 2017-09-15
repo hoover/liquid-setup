@@ -79,6 +79,8 @@ def random_salt():
     urandom = random.SystemRandom()
     return ''.join(urandom.choice('0123456789abcdef') for _ in range(128))
 
+print("\n\n=== INITIALIZE DOKUWIKI ===\n")
+
 docker_lib = Path('/var/lib/docker')
 volume = docker_lib / 'volumes/dokuwiki_dokuwiki'
 data = volume / '_data'

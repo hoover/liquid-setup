@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+printf '\n\n=== INITIALIZE HYPOTHESIS ===\n\n'
 set -x
 
 cd /opt/hypothesis

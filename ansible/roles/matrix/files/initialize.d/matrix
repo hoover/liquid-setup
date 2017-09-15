@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+printf '\n\n=== INITIALIZE MATRIX ===\n\n'
+set -x
 
 echo "Matrix just works, man. Let's just start it now..."
 supervisorctl start matrix

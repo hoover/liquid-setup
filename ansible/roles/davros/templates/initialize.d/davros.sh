@@ -1,8 +1,12 @@
 #!/bin/bash
-
 set -e
+printf '\n\n=== INITIALIZE DAVROS ===\n\n'
+set -x
 
 sudo -u liquid /opt/liquid-core/libexec/create-oauth-application "davros" "{{ http_scheme }}://davros.{{ liquid_domain }}/__auth/callback"
+
+echo "Creating secret keys..."
+set +x
 source /var/lib/liquid/oauth_keys/davros
 echo "LIQUID_CLIENT_ID = '$CLIENT_ID'" > /opt/davros/authproxy/config/oauth.py
 echo "LIQUID_CLIENT_SECRET = '$CLIENT_SECRET'" >> /opt/davros/authproxy/config/oauth.py
