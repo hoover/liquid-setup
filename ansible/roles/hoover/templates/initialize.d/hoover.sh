@@ -29,6 +29,5 @@ EOF
 # create testdata collection
 /opt/hoover/libexec/import_testdata
 
-# Start services now, and autostart on subsequent boots
+# Start services
 supervisorctl start hoover-elasticsearch hoover-search hoover-snoop hoover-tika
-sed -i '/autostart = false/d' /etc/supervisor/conf.d/hoover.conf
