@@ -142,3 +142,9 @@
     src: libexec/firewall
     dest: /opt/common/libexec/firewall
     mode: 0755
+
+- when: ansible_architecture == 'x86_64'
+  name: "Cloud: Set up ens3 interface as dhcp"
+  copy:
+    content: "auto ens3\niface ens3 inet dhcp\n"
+    dest: /etc/network/interfaces.d/ens3.cfg
