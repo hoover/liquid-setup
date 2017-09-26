@@ -1,9 +1,0 @@
-#!/bin/bash
-set -e
-
-cd /opt/hoover/search
-source /opt/hoover/venvs/search/bin/activate
-exec waitress-serve \
-  --port 11940 \
-  --host 127.0.0.1 \
-  hoover.site.wsgi:application

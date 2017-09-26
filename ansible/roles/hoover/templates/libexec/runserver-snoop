@@ -1,9 +1,0 @@
-#!/bin/bash
-set -e
-
-cd /opt/hoover/snoop
-source /opt/hoover/venvs/snoop/bin/activate
-exec waitress-serve \
-  --port 11941 \
-  --host 127.0.0.1 \
-  snoop.site.wsgi:application

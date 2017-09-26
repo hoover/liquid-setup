@@ -1,0 +1,29 @@
+---
+- name: Create folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /opt/hoover
+    - /opt/hoover/search-settings
+    - /opt/hoover/snoop-settings
+
+- name: Write docker config files
+  template:
+    # `src` is a relative path because this file is included
+    # directly from `image_host_docker.yml`, not as a role.
+    src: "../templates/docker/{{ item }}"
+    dest: "/opt/hoover/{{ item }}"
+    mode: 0644
+  with_items:
+    - docker-compose.yml
+    - search-settings/settings.py
+    - snoop-settings/settings.py
+
+- name: Pull docker images
+  when: build_docker_images
+  docker_service:
+    project_src: /opt/hoover
+    build: true
+    stopped: true
