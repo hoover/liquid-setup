@@ -28,9 +28,6 @@ echo "Starting all services."
 supervisorctl start all
 
 echo "Running on-boot hook."
-for file in /opt/common/hooks/on-boot.d/*
-do
-  "$file"
-done
+/opt/common/libexec/invoke-hook on-boot
 
 echo "Boot scripts done."
