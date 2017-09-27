@@ -9,6 +9,20 @@
     - /opt/hoover/search-settings
     - /opt/hoover/snoop-settings
 
+- when: ansible_architecture == 'x86_64'
+  set_fact:
+    hoover_postgres_image: 'postgres:9.6'
+    hoover_ui_image: 'liquidinvestigations/hoover-ui:latest'
+    hoover_snoop_image: 'liquidinvestigations/hoover-snoop:latest'
+    hoover_search_image: 'liquidinvestigations/hoover-search:latest'
+
+- when: ansible_architecture in ['armv7l', 'aarch64']
+  set_fact:
+    hoover_postgres_image: 'arm32v6/postgres:9.6-alpine'
+    hoover_ui_image: 'liquidinvestigations/hoover-ui:latest-arm32v6'
+    hoover_snoop_image: 'liquidinvestigations/hoover-snoop:latest-arm64v8'
+    hoover_search_image: 'liquidinvestigations/hoover-search:latest-arm64v8'
+
 - name: Write docker config files
   template:
     # `src` is a relative path because this file is included

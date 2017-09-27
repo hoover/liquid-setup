@@ -3,7 +3,7 @@ version: "2"
 services:
 
   snoop-pg:
-    image: postgres:9.6
+    image: {{ hoover_postgres_image }}
     volumes:
       - ./volumes/snoop-pg/data:/var/lib/postgresql/data
     environment:
@@ -14,7 +14,7 @@ services:
     image: logicalspark/docker-tikaserver
 
   snoop:
-    image: liquidinvestigations/hoover-snoop:latest
+    image: {{ hoover_snoop_image }}
     volumes:
       - ./volumes/cache:/opt/hoover/cache
       - ./collections:/opt/hoover/collections
@@ -27,7 +27,7 @@ services:
       DJANGO_SETTINGS_MODULE: snoop.site.docker.settings
 
   search-pg:
-    image: postgres:9.6
+    image: {{ hoover_postgres_image }}
     volumes:
       - ./volumes/search-pg/data:/var/lib/postgresql/data
     environment:
@@ -40,12 +40,12 @@ services:
       - ./volumes/search-es/data:/usr/share/elasticsearch/data
 
   ui:
-    image: liquidinvestigations/hoover-ui:latest
+    image: {{ hoover_ui_image }}
     volumes:
       - ./ui/build:/opt/hoover/ui/build
 
   search:
-    image: liquidinvestigations/hoover-search:latest
+    image: {{ hoover_search_image }}
     volumes:
       - ./ui/build:/opt/hoover/ui/build
       - ./search-settings:/opt/hoover/search/hoover/site/docker
