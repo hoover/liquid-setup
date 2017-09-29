@@ -37,7 +37,6 @@
 
 - name: Pull docker images
   when: build_docker_images
-  docker_service:
-    project_src: /opt/hoover
-    build: true
-    stopped: true
+  command: docker-compose pull
+  args:
+    chdir: /opt/hoover
