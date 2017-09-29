@@ -8,7 +8,6 @@ services:
       - ./volumes/snoop-pg/data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: snoop
-      POSTGRES_DATABASE: snoop
 
   snoop-tika:
     image: logicalspark/docker-tikaserver
@@ -32,7 +31,6 @@ services:
       - ./volumes/search-pg/data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: search
-      POSTGRES_DATABASE: search
 
   search-es:
     image: elasticsearch:2
