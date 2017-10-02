@@ -19,8 +19,8 @@ if [ ! -s /opt/hoover/search-settings/secret_key.py ]; then
 fi
 
 # create and migrate dbs
-docker-compose run --rm snoop ./manage.py migrate
-docker-compose run --rm search ./manage.py migrate
+docker-compose run --rm snoop /wait-for-it snoop-pg:5432 -- ./manage.py migrate
+docker-compose run --rm search /wait-for-it search-pg:5432 -- ./manage.py migrate
 
 # build the ui
 /opt/hoover/libexec/build_ui
