@@ -1,15 +1,6 @@
 ---
 - import_tasks: tasks/docker.yml
 
-- name: Set permissions on the cache folder
-  file:
-    path: /opt/hoover/cache
-    state: directory
-    mode: 0755
-    owner: liquid
-    group: liquid
-    recurse: true
-
 - name: Create the libexec folder
   file:
     path: /opt/hoover/libexec
