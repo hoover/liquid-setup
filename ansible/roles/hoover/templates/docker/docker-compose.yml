@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: snoop
 
   snoop-tika:
-    image: logicalspark/docker-tikaserver
+    image: {{ hoover_tika_image }}
 
   snoop:
     image: {{ hoover_snoop_image }}
@@ -33,7 +33,7 @@ services:
       POSTGRES_USER: search
 
   search-es:
-    image: elasticsearch:2
+    image: {{ hoover_elasticsearch_image }}
     volumes:
       - ./volumes/search-es/data:/usr/share/elasticsearch/data
 

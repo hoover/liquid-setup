@@ -15,6 +15,8 @@
     hoover_ui_image: 'liquidinvestigations/hoover-ui:latest'
     hoover_snoop_image: 'liquidinvestigations/hoover-snoop:latest'
     hoover_search_image: 'liquidinvestigations/hoover-search:latest'
+    hoover_elasticsearch_image: 'elasticsearch:2'
+    hoover_tika_image: 'logicalspark/docker-tikaserver'
 
 - when: ansible_architecture in ['armv7l', 'aarch64']
   set_fact:
@@ -22,6 +24,8 @@
     hoover_ui_image: 'liquidinvestigations/hoover-ui:latest-arm32v6'
     hoover_snoop_image: 'liquidinvestigations/hoover-snoop:latest-arm64v8'
     hoover_search_image: 'liquidinvestigations/hoover-search:latest-arm64v8'
+    hoover_elasticsearch_image: 'liquidinvestigations/elasticsearch:latest-arm64v8'
+    hoover_tika_image: 'liquidinvestigations/tika:latest-arm64v8'
 
 - name: Write docker config files
   template:
