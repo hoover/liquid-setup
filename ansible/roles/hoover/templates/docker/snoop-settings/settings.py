@@ -22,6 +22,7 @@ DATABASES = {
 }
 
 SNOOP_ELASTICSEARCH_URL = 'http://search-es:9200'
+SNOOP_ELASTICSEARCH_TIMEOUT = 120
 SNOOP_TIKA_SERVER_ENDPOINT = 'http://snoop-tika:9998'
 SNOOP_TIKA_FILE_TYPES = ['doc', 'pdf', 'xls', 'ppt']
 SNOOP_TIKA_MAX_FILE_SIZE = 32 * (2 ** 20)  # 32mb
