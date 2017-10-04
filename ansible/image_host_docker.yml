@@ -6,6 +6,7 @@
   vars_files:
     - vars/defaults.yml
     - vars/config.yml
+    - vars/computed.yml
   roles:
     - docker
   tasks:
