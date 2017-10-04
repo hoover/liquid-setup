@@ -12,7 +12,7 @@ if [[ $have_testdata -ne 0 ]]; then echo "testdata collection already exists"; e
 docker-compose run --rm snoop ./manage.py createcollection /opt/hoover/collections/testdata/data testdata testdata "Hoover Test Data" "Hoover Test Data"
 docker-compose run --rm snoop ./manage.py walk testdata
 docker-compose run --rm snoop ./manage.py digestqueue
-docker-compose run --rm snoop ./manage.py worker digest
-docker-compose run --rm snoop ./manage.py resetindex testdata
+docker-compose run --rm snoop /wait-for-it snoop-tika:9998 -t 120 -- ./manage.py worker digest
+docker-compose run --rm snoop /wait-for-it search-es:9200 -t 120 -- ./manage.py resetindex testdata
 docker-compose run --rm search ./manage.py addcollection testdata http://snoop/testdata/json
 docker-compose run --rm search ./manage.py update -v2 testdata
