@@ -10,7 +10,7 @@ DATABASES = {
     }
 }
 
-INVOKE_HOOK = '/opt/common/libexec/invoke-hook'
+INVOKE_HOOK = 'sudo /opt/common/libexec/invoke-hook'
 
 HOOVER_APP_URL = 'http://hoover.{{ liquid_domain }}'
 HYPOTHESIS_APP_URL = 'http://hypothesis.{{ liquid_domain }}'
