@@ -124,6 +124,9 @@ supply all the certificate files under `/var/lib/liquid/https/certs/` and
 restart nginx.  To find what certificates are needed, run `grep -r /https/certs
 ./ansible/roles`.
 
+Also, thou shalt generate a `/var/lib/liquid/https/nginx/dhparams.pem` file
+with diffie-hellman parameters.
+
 ### Demo server
 The `bin/configure-demo-image` script takes a nightly cloud image and
 provisions it to act as demo server. It should be run from a Factory VM.

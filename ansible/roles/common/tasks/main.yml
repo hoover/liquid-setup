@@ -61,15 +61,16 @@
     src: supervisor/supervisor.conf
     dest: /etc/supervisor/supervisor.conf
 
-- name: Create /var/lib/liquid directory
+- name: Create /var/lib/liquid directory structure
   file:
-    path: /var/lib/liquid
+    path: "{{ item }}"
     state: directory
-
-- name: Create /var/lib/liquid/conf directory
-  file:
-    path: /var/lib/liquid/conf
-    state: directory
+  with_items:
+    - /var/lib/liquid
+    - /var/lib/liquid/conf
+    - /var/lib/liquid/https
+    - /var/lib/liquid/https/nginx
+    - /var/lib/liquid/https/certs
 
 - name: Create common folder
   file:
@@ -129,6 +130,11 @@
   template:
     src: nginx/index.html
     dest: /var/www/html/index.html
+
+- name: nginx https settings
+  copy:
+    src: nginx/https.conf
+    dest: /var/lib/liquid/https/nginx/https.conf
 
 - name: Create /opt/common/libexec directory
   file:
