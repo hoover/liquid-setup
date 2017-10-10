@@ -48,6 +48,8 @@
   args:
     chdir: /opt/matrix/synapse
     creates: /opt/matrix/synapse/homeserver.yaml
+  tags:
+    - configure
 
 # The "synapse.app.homeserver ...  --generate-config" from the previous task
 # auto-creates a bunch of files named after the hostname.  Additionally,
@@ -60,10 +62,14 @@
 # the `creates` directive), and so we don't move anything.
 - name: Move generated logging configuration
   shell: ls /opt/matrix/synapse/homeserver.log.config || mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.log.config /opt/matrix/synapse/homeserver.log.config
+  tags:
+    - configure
 
 # Same as above, but for all the unused security certificates.
 - name: Move away generated tls certificates
   shell: for ext in tls.crt tls.key tls.dh signing.key; do (ls /opt/matrix/synapse/unused-certificate.$ext || mv /opt/matrix/synapse/matrix.{{ liquid_domain }}.$ext /opt/matrix/synapse/unused-certificate.$ext); done
+  tags:
+    - configure
 
 - name: Overwrite the configuration file
   template:
@@ -88,3 +94,5 @@
   template:
     src: nginx/matrix.conf
     dest: /etc/nginx/sites-enabled/matrix.conf
+  tags:
+    - configure

@@ -11,18 +11,24 @@
 - name: Set up machine hostname
   hostname:
     name: "{{ liquid_domain.split('.')[0] }}"
+  tags:
+    - configure
 
 - name: Put hostname in /etc/hosts
   lineinfile:
     path: /etc/hosts
     line: '127.0.0.1 {{ liquid_domain.split(".")[0] }}'
     state: present
+  tags:
+    - configure
 
 - name: Put FQDN in /etc/hosts
   lineinfile:
     path: /etc/hosts
     line: '127.0.0.1 {{ liquid_domain }}'
     state: present
+  tags:
+    - configure
 
 - name: Install base packages
   apt:
@@ -134,6 +140,8 @@
   template:
     src: nginx/index.html
     dest: /var/www/html/index.html
+  tags:
+    - configure
 
 - name: nginx https settings
   copy:

@@ -96,6 +96,8 @@
   template:
     src: nginx/hoover.conf
     dest: /etc/nginx/sites-enabled/hoover.conf
+  tags:
+    - configure
 
 - name: Create the libexec folder
   file:
@@ -141,6 +143,8 @@
     src: initialize.d/hoover.sh
     dest: /opt/common/initialize.d/22-hoover.sh
     mode: 0755
+  tags:
+    - configure
 
 - name: Create the tika run script
   template:
@@ -177,6 +181,8 @@
     dest: /opt/hoover/search/hoover/site/settings/local.py
     owner: liquid
     group: liquid
+  tags:
+    - configure
 
 - name: Touch the secret_key.py config for search
   file:

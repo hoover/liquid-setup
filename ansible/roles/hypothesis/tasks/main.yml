@@ -95,6 +95,8 @@
     src: initialize.d/hypothesis.sh
     dest: /opt/common/initialize.d/23-hypothesis.sh
     mode: 0755
+  tags:
+    - configure
 
 - name: Create the libexec folder
   file:
@@ -113,6 +115,8 @@
     src: libexec/run-h
     dest: /opt/hypothesis/libexec/run-h
     mode: 0755
+  tags:
+    - configure
 
 - name: Create the supervisor configuration file
   template:
@@ -123,6 +127,8 @@
   template:
     src: nginx/hypothesis.conf
     dest: /etc/nginx/sites-enabled/hypothesis.conf
+  tags:
+    - configure
 
 - name: Subscribe to hooks
   copy:
@@ -133,3 +139,5 @@
     - user-created
     - user-passwd
     - user-deleted
+  tags:
+    - configure
