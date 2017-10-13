@@ -9,6 +9,7 @@
   git:
     repo: https://github.com/liquidinvestigations/core.git
     dest: /opt/liquid-core/liquid-core
+    version: "{{ git_repo_versions.liquid_core }}"
 
 - name: Create the configuration file
   template:
