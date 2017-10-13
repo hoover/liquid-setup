@@ -4,73 +4,15 @@ set -x
 
 cd /opt/hoover
 
-function wait_url {
-    X=0
-    until $(curl --output /dev/null --silent --head --fail $1); do
-        sleep 3
-        ((X=X+1))
-        if [[ $X -gt 20 ]]; then
-            echo "wait_url: $1 timed out" >&2
-            exit 1;
-        fi
-    done
-}
-
-supervisorctl start hoover-elasticsearch
-
 # if the testdata collection exists, exit
-have_testdata=$(sudo -u liquid /opt/hoover/bin/hoover snoop collection | grep testdata | wc -l)
-if [[ $have_testdata -ne 0 ]]; then exit 0; fi
+have_testdata=$(docker-compose run --rm snoop ./manage.py collection | grep testdata | wc -l)
+if [[ $have_testdata -ne 0 ]]; then echo "testdata collection already exists"; exit 0; fi
 
-# create the testdata collection
-supervisorctl start hoover-tika
-supervisorctl start hoover-snoop
-
-# create the testdata collection and walk / digest it
-sudo -u liquid bash <<EOF
-set -x
-/opt/hoover/bin/hoover snoop createcollection /opt/hoover/testdata testdata testdata "Hoover Test Data", "Hoover Test Data"
-/opt/hoover/bin/hoover snoop walk testdata
-/opt/hoover/bin/hoover snoop digestqueue
-EOF
-
-# wait after hoover's tika
-tika_url="http://localhost:15423"
-wait_url $tika_url
-
-sudo -u liquid bash <<EOF
-set -x
-/opt/hoover/bin/hoover snoop worker digest
-EOF
-
-supervisorctl stop hoover-tika
-supervisorctl start hoover-elasticsearch
-
-# wait after hoover's elasticsearch
-es_url="http://localhost:14352"
-wait_url $es_url
-
-sudo -u liquid bash <<EOF
-set -x
-/opt/hoover/bin/hoover snoop resetindex testdata
-EOF
-
-snoop_url="http://localhost:11941"
-wait_url $snoop_url/testdata/json
-
-
-sudo -u liquid bash <<EOF
-set -x
-/opt/hoover/bin/hoover search addcollection testdata "$snoop_url/testdata/json"
-/opt/hoover/bin/hoover search update testdata
-EOF
-
-supervisorctl stop hoover-snoop
-supervisorctl stop hoover-elasticsearch
-
-sudo -u liquid bash <<EOF
-set -x
-. /opt/hoover/venvs/snoop/bin/activate
-cd /opt/hoover/snoop
-#py.test
-EOF
+# index the testdata collection
+docker-compose run --rm snoop ./manage.py createcollection /opt/hoover/collections/testdata/data testdata testdata "Hoover Test Data" "Hoover Test Data"
+docker-compose run --rm snoop ./manage.py walk testdata
+docker-compose run --rm snoop ./manage.py digestqueue
+docker-compose run --rm snoop /wait-for-it snoop-tika:9998 -t 120 -- ./manage.py worker digest
+docker-compose run --rm snoop /wait-for-it search-es:9200 -t 120 -- ./manage.py resetindex testdata
+docker-compose run --rm search ./manage.py addcollection testdata http://snoop/testdata/json
+docker-compose run --rm search ./manage.py update -v2 testdata

@@ -1,0 +1,58 @@
+version: "2"
+
+services:
+
+  snoop-pg:
+    image: {{ hoover_postgres_image }}
+    volumes:
+      - ./volumes/snoop-pg/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: snoop
+
+  snoop-tika:
+    image: {{ hoover_tika_image }}
+
+  snoop:
+    image: {{ hoover_snoop_image }}
+    volumes:
+      - ./volumes/cache:/opt/hoover/cache
+      - ./collections:/opt/hoover/collections
+      - ./snoop-settings:/opt/hoover/snoop/snoop/site/docker
+    depends_on:
+      - snoop-pg
+      - snoop-tika
+      - search-es
+    environment:
+      DJANGO_SETTINGS_MODULE: snoop.site.docker.settings
+
+  search-pg:
+    image: {{ hoover_postgres_image }}
+    volumes:
+      - ./volumes/search-pg/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: search
+
+  search-es:
+    image: {{ hoover_elasticsearch_image }}
+    volumes:
+      - ./volumes/search-es/data:/usr/share/elasticsearch/data
+
+  ui:
+    image: {{ hoover_ui_image }}
+    volumes:
+      - ./ui/build:/opt/hoover/ui/build
+
+  search:
+    image: {{ hoover_search_image }}
+    volumes:
+      - ./ui/build:/opt/hoover/ui/build
+      - ./search-settings:/opt/hoover/search/hoover/site/docker
+    depends_on:
+      - search-pg
+      - search-es
+      - ui
+      - snoop
+    environment:
+      DJANGO_SETTINGS_MODULE: hoover.site.docker.settings
+    ports:
+      - 11940:80

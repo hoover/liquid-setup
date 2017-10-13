@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-cd /opt/hoover
-set -x
-exec java -jar tika-server-1.16.jar -p 15423

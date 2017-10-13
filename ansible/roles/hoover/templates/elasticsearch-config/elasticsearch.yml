@@ -1,5 +1,0 @@
-index.number_of_shards: 1
-index.number_of_replicas: 0
-network.host: 127.0.0.1
-http.port: 14352
-transport.tcp.port: 14353
