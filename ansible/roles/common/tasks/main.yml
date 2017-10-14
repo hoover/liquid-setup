@@ -166,3 +166,9 @@
   copy:
     content: "auto ens3\niface ens3 inet dhcp\n"
     dest: /etc/network/interfaces.d/ens3.cfg
+
+- name: Clone the setup repo in /opt/setup
+  git:
+    repo: https://github.com/liquidinvestigations/setup.git
+    dest: /opt/setup
+    version: "{{ git_repo_versions.setup }}"
