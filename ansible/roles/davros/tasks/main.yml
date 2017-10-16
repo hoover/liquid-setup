@@ -12,9 +12,13 @@
   template:
     src: nginx/davros.conf
     dest: /etc/nginx/sites-enabled/davros.conf
+  tags:
+    - configure
 
 - name: Copy the initialization script
   template:
     src: initialize.d/davros.sh
     dest: /opt/common/initialize.d/20-davros.sh
     mode: 0755
+  tags:
+    - configure

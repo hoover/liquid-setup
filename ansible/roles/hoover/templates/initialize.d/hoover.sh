@@ -11,12 +11,13 @@ if [ ! -s /opt/hoover/search/hoover/site/settings/secret_key.py ]; then
     set +x
     echo "SECRET_KEY = '`openssl rand -base64 48`'" > /opt/hoover/search/hoover/site/settings/secret_key.py
     echo "SECRET_KEY = '`openssl rand -base64 48`'" > /opt/hoover/snoop/snoop/site/settings/secret_key.py
-    sudo -u liquid /opt/liquid-core/libexec/create-oauth-application "hoover" "{{ http_scheme }}://hoover.{{ liquid_domain }}/accounts/oauth2-exchange/"
-    source /var/lib/liquid/oauth_keys/hoover
-    echo "CLIENT_ID = '$CLIENT_ID'" > /opt/hoover/search/hoover/site/settings/oauth.py
-    echo "CLIENT_SECRET = '$CLIENT_SECRET'" >> /opt/hoover/search/hoover/site/settings/oauth.py
 )
 fi
+
+sudo -u liquid /opt/liquid-core/libexec/create-oauth-application "hoover" "{{ http_scheme }}://hoover.{{ liquid_domain }}/accounts/oauth2-exchange/"
+source /var/lib/liquid/oauth_keys/hoover
+echo "CLIENT_ID = '$CLIENT_ID'" > /opt/hoover/search/hoover/site/settings/oauth.py
+echo "CLIENT_SECRET = '$CLIENT_SECRET'" >> /opt/hoover/search/hoover/site/settings/oauth.py
 
 # create and migrate dbs
 sudo -u liquid bash <<EOF

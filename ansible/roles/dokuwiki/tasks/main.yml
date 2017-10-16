@@ -13,6 +13,8 @@
     template:
       src: nginx/dokuwiki.conf
       dest: /etc/nginx/sites-enabled/dokuwiki.conf
+    tags:
+      - configure
 
   - name: Create the initialization script
     copy:

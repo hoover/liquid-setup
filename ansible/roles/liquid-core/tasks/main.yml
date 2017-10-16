@@ -16,6 +16,8 @@
     src: local.py
     dest: /opt/liquid-core/liquid-core/liquidcore/site/settings/local.py
     mode: 0755
+  tags:
+    - configure
 
 - name: Create the secret_key file
   copy:
@@ -67,14 +69,19 @@
   template:
     src: nginx/liquid-core.conf
     dest: /etc/nginx/sites-enabled/liquid-core.conf
+  tags:
+    - configure
 
-- name: Create the /var/lib/liquid/oauth_keys directory
+- name: Create /var/lib/liquid directories
   file:
-    path: /var/lib/liquid/oauth_keys
+    path: "{{ item }}"
     state: directory
     owner: liquid
     group: liquid
     mode: 0700
+  with_items:
+    - /var/lib/liquid/oauth_keys
+    - /var/lib/liquid/core
 
 - name: Create the initialization script
   template:

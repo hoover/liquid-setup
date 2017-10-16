@@ -21,6 +21,8 @@
   template:
     src: avahi/liquid.service
     dest: /etc/avahi/services/liquid.service
+  tags:
+    - configure
 
 - name: Don't run dnsmasq as system service
   service:
@@ -50,6 +52,8 @@
   template:
     src: local.py
     dest: /opt/discover/discover/settings/local.py
+  tags:
+    - configure
 
 - name: Install requirements for discover
   pip:

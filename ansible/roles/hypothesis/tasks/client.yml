@@ -12,8 +12,12 @@
   command: ./bake.py
   args:
     chdir: /opt/hypothesis/h-client-build
+  tags:
+    - configure
 
 - name: Create the nginx configuration file
   template:
     src: nginx/hypothesis-client.conf
     dest: /etc/nginx/sites-enabled/hypothesis-client.conf
+  tags:
+    - configure

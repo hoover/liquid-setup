@@ -20,4 +20,7 @@ DAVROS_APP_URL = 'http://davros.{{ liquid_domain }}'
 LIQUID_DOMAIN = '{{ liquid_domain }}'
 DISCOVERY_URL = 'http://localhost:13777'
 
+LIQUID_SETUP_RECONFIGURE = 'sudo /opt/setup/libexec/liquid-core-reconfigure'
+LIQUID_CORE_VAR = '/var/lib/liquid/core'
+
 from .secret_key import SECRET_KEY
