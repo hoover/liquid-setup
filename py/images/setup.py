@@ -28,4 +28,5 @@ def install(tags):
     builder = Builder_cloud()
     builder.install_ansible()
     (builder.setup / 'ansible' / 'vars' / 'config.yml').touch()
+    (builder.setup / 'ansible' / 'vars' / 'liquidcore.yml').touch()
     builder.run_ansible('server.yml', tags)
