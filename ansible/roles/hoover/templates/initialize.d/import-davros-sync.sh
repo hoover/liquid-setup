@@ -19,7 +19,7 @@ function wait_url {
 supervisorctl start hoover-elasticsearch
 supervisorctl start davros
 
-DAVROS_DATA_PATH=/var/lib/docker/volumes/davros_content/_data
+DAVROS_DATA_PATH=/var/lib/liquid/data/davros-sync
 
 # if the davros-sync collection exists, exit
 have_davros_sync=$(sudo -u liquid /opt/hoover/bin/hoover snoop collection | grep davros-sync | wc -l)
