@@ -61,13 +61,5 @@ def cat_logs_and_exit():
 
 
 if __name__ == '__main__':
-    try:
-        wait_for_first_boot()
-        cat_logs_and_exit()
-    finally:
-        print("Stopping all apps")
-        # otherwise, shutdown takes a long time, and kitchen times out
-        subprocess.run(['supervisorctl', 'stop', 'all'])
-        subprocess.run(['service', 'docker', 'stop'])
-        subprocess.run(['service', 'postgresql', 'stop'])
-        subprocess.run(['sync'])
+    wait_for_first_boot()
+    cat_logs_and_exit()

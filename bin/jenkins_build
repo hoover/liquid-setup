@@ -17,4 +17,12 @@ free -h
 df -h
 dmesg | tail -n 30
 
+if [ -x "$(command -v supervisorctl)" ]; then
+        supervisorctl stop all
+        service docker stop
+        service nginx stop
+        service postgresql stop
+fi
+
+sync
 exit $RETURN_CODE
