@@ -7,6 +7,9 @@ git_repo_versions:
   hoover:
     setup: master
     testdata: master
+    snoop: master
+    search: master
+    ui: master
   hypothesis:
     h: 53046f652c801b85e792c0020fa71f7493b249da
     h_client_build: master

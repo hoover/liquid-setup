@@ -62,6 +62,24 @@
     - name: Fail the task because Hoover failed to install
       command: /bin/false
 
+- name: Update source code for hoover search
+  git:
+    repo: https://github.com/hoover/search.git
+    dest: /opt/hoover/search
+    version: "{{ git_repo_versions.hoover.search }}"
+
+- name: Update source code for hoover snoop
+  git:
+    repo: https://github.com/hoover/snoop.git
+    dest: /opt/hoover/search
+    version: "{{ git_repo_versions.hoover.snoop }}"
+
+- name: Update source code for hoover ui
+  git:
+    repo: https://github.com/hoover/ui.git
+    dest: /opt/hoover/search
+    version: "{{ git_repo_versions.hoover.ui }}"
+
 - name: Download elasticsearch v2
   unarchive:
     src: https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-2.4.3.tar.gz
