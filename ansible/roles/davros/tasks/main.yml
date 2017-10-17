@@ -18,3 +18,13 @@
     src: initialize.d/davros.sh
     dest: /opt/common/initialize.d/20-davros.sh
     mode: 0755
+
+- name: Create empty data dir for davros-sync
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: liquid
+    group: liquid
+  with_items:
+    - "/var/lib/liquid/data"
+    - "/var/lib/liquid/data/davros-sync"

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -ex
+
+sleep 3
+cd /opt/hoover
+/opt/hoover/bin/hoover snoop worker digest

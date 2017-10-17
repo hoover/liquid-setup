@@ -14,3 +14,7 @@ echo "LIQUID_CLIENT_SECRET = '$CLIENT_SECRET'" >> /opt/davros/authproxy/config/o
 if [ ! -s /opt/davros/authproxy/config/secret.py ]; then
     echo "SECRET_KEY = '`openssl rand -base64 48`'" > /opt/davros/authproxy/config/secret.py
 fi
+
+set -x
+
+mount --bind /var/lib/docker/volumes/davros_content/_data /var/lib/liquid/data/davros-sync

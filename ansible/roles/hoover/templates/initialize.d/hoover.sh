@@ -27,8 +27,5 @@ psql -lqt | cut -d \| -f 1 | grep -qw hoover-snoop || createdb hoover-snoop
 /opt/hoover/bin/hoover snoop migrate
 EOF
 
-# create testdata collection
-/opt/hoover/libexec/import_testdata
-
 # Start services
 supervisorctl start hoover-elasticsearch hoover-search hoover-snoop hoover-tika

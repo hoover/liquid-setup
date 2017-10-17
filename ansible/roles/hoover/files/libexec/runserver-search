@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 cd /opt/hoover/search
 source /opt/hoover/venvs/search/bin/activate

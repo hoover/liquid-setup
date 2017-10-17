@@ -71,13 +71,13 @@
 - name: Update source code for hoover snoop
   git:
     repo: https://github.com/hoover/snoop.git
-    dest: /opt/hoover/search
+    dest: /opt/hoover/snoop
     version: "{{ git_repo_versions.hoover.snoop }}"
 
 - name: Update source code for hoover ui
   git:
     repo: https://github.com/hoover/ui.git
-    dest: /opt/hoover/search
+    dest: /opt/hoover/ui
     version: "{{ git_repo_versions.hoover.ui }}"
 
 - name: Download elasticsearch v2
@@ -121,6 +121,20 @@
     state: directory
     mode: 0755
 
+- name: Create libexec scripts
+  copy:
+    src: "libexec/{{ item }}"
+    dest: "/opt/hoover/libexec/{{ item }}"
+    mode: 0755
+  with_items:
+    - elasticsearch
+    - runserver-search
+    - runserver-snoop
+    - snoop-updater
+    - search-updater
+    - snoop-worker
+    - tika
+
 - name: Set permissions on the cache folder
   file:
     path: /opt/hoover/cache
@@ -130,40 +144,22 @@
     group: liquid
     recurse: true
 
-- name: Create the elasticsearch run script
-  template:
-    src: libexec/elasticsearch
-    dest: /opt/hoover/libexec/elasticsearch
-    mode: 0755
-
-- name: Create the runserver-search helper
-  template:
-    src: libexec/runserver-search
-    dest: /opt/hoover/libexec/runserver-search
-    mode: 0755
-
-- name: Create the runserver-snoop helper
-  template:
-    src: libexec/runserver-snoop
-    dest: /opt/hoover/libexec/runserver-snoop
-    mode: 0755
-
-- name: Create the import_testdata script
-  copy:
-    src: libexec/import_testdata
-    dest: /opt/hoover/libexec/import_testdata
-    mode: 0755
-
 - name: Create the initialization script
   template:
     src: initialize.d/hoover.sh
     dest: /opt/common/initialize.d/22-hoover.sh
     mode: 0755
 
-- name: Create the tika run script
+- name: Create the testdata import initialize script
   template:
-    src: libexec/tika
-    dest: /opt/hoover/libexec/tika
+    src: initialize.d/import-testdata.sh
+    dest: /opt/common/initialize.d/40-hoover-import-testdata.sh
+    mode: 0755
+
+- name: Create the testdata import initialize script
+  template:
+    src: initialize.d/import-davros-sync.sh
+    dest: /opt/common/initialize.d/41-hoover-import-davros-sync.sh
     mode: 0755
 
 - name: Clone the testdata repo

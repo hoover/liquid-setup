@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 cd /opt/hoover/snoop
 source /opt/hoover/venvs/snoop/bin/activate
