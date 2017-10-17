@@ -34,7 +34,6 @@ sudo -u liquid bash <<EOF
 set -x
 /opt/hoover/bin/hoover snoop createcollection '$DAVROS_DATA_PATH' davros-sync davros-sync "Davros Upload", "Davros Upload"
 /opt/hoover/bin/hoover snoop walk davros-sync
-/opt/hoover/bin/hoover snoop digestqueue
 EOF
 
 # wait after hoover's tika

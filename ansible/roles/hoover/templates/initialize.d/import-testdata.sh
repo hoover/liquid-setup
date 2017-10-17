@@ -31,7 +31,6 @@ sudo -u liquid bash <<EOF
 set -x
 /opt/hoover/bin/hoover snoop createcollection /opt/hoover/testdata testdata testdata "Hoover Test Data", "Hoover Test Data"
 /opt/hoover/bin/hoover snoop walk testdata
-/opt/hoover/bin/hoover snoop digestqueue
 EOF
 
 # wait after hoover's tika
