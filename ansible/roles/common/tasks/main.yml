@@ -61,10 +61,18 @@
     name: "{{ item }}"
     enabled: no
   with_items:
-    - apt-daily-upgrade.service
     - apt-daily.service
-    - apt-daily-upgrade.timer
     - apt-daily.timer
+  tags:
+    - prerequisites
+
+- name: Uninstall the debian unattended-upgrades package
+  apt:
+    name: unattended-upgrades
+    state: absent
+    purge: yes
+  tags:
+    - prerequisites
 
 - name: Enable supervisor
   service:
