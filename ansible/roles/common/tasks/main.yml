@@ -56,6 +56,16 @@
 - name: apt-get clean
   command: apt-get -y clean
 
+- name: Disable ubuntu apt auto-update services
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items:
+    - apt-daily-upgrade.service
+    - apt-daily.service
+    - apt-daily-upgrade.timer
+    - apt-daily.timer
+
 - name: Enable supervisor
   service:
     name: supervisor
