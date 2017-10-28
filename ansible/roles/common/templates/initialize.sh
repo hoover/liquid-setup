@@ -18,6 +18,14 @@ do
   fi
   echo "$file $RESULT" >> /opt/common/first_boot_status
 done
+
+/opt/liquid-core/libexec/manage repairconfig
+RESULT=$?
+if [ 0 -ne $RESULT ]; then
+    INITIALIZE_RESULT=$RESULT
+fi
+echo "/opt/liquid-core/libexec/manage repairconfig $RESULT" >> /opt/common/first_boot_status
+
 set -e
 
 echo "$0 $INITIALIZE_RESULT" >> /opt/common/first_boot_status
