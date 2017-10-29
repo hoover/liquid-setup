@@ -11,6 +11,7 @@ INITIALIZE_RESULT=0
 set +e
 for file in /opt/common/initialize.d/*
 do
+  date
   "$file"
   RESULT=$?
   if [ 0 -ne $RESULT ]; then
@@ -18,6 +19,8 @@ do
   fi
   echo "$file $RESULT" >> /opt/common/first_boot_status
 done
+
+date
 
 /opt/liquid-core/libexec/manage repairconfig
 RESULT=$?
