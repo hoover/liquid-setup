@@ -22,6 +22,11 @@ done
 
 date
 
+echo "Restarting NetworkManager."
+service network-manager restart
+
+date
+
 /opt/liquid-core/libexec/manage repairconfig
 RESULT=$?
 if [ 0 -ne $RESULT ]; then
