@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+if __name__ == '__main__':
+    from pathlib import Path
+    import sys
+
+    repo = Path(__file__).resolve().parent.parent
+    sys.path.append(str(repo / 'py'))
+
+    from liquid.vpn import status
+    status.report()
