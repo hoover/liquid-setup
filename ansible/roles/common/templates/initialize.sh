@@ -11,6 +11,7 @@ INITIALIZE_RESULT=0
 set +e
 for file in /opt/common/initialize.d/*
 do
+  date
   "$file"
   RESULT=$?
   if [ 0 -ne $RESULT ]; then
@@ -18,6 +19,21 @@ do
   fi
   echo "$file $RESULT" >> /opt/common/first_boot_status
 done
+
+date
+
+echo "Restarting NetworkManager."
+service network-manager restart
+
+date
+
+/opt/liquid-core/libexec/manage repairconfig
+RESULT=$?
+if [ 0 -ne $RESULT ]; then
+    INITIALIZE_RESULT=$RESULT
+fi
+echo "/opt/liquid-core/libexec/manage repairconfig $RESULT" >> /opt/common/first_boot_status
+
 set -e
 
 echo "$0 $INITIALIZE_RESULT" >> /opt/common/first_boot_status

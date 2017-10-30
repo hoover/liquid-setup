@@ -29,6 +29,7 @@ def cat(filename):
 
 
 def cat_log(message, log_filename=FILE_LOG):
+    print("date:", subprocess.check_output(['date']).strip())
     print(message)
     print("See the log below.\n")
     cat(log_filename)

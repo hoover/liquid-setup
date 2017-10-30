@@ -8,7 +8,7 @@ def get_first_boot_status():
         lines = f.readlines()
     status = []
     for line in lines:
-        [path, return_value_str] = line.split(" ")
+        [path, return_value_str] = line.rsplit(" ", 1)
         return_value = int(return_value_str)
         script_name = Path(path).name
         status.append((script_name, return_value == 0))

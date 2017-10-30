@@ -14,6 +14,6 @@ git_repo_versions:
     h: 53046f652c801b85e792c0020fa71f7493b249da
     h_client_build: master
   discover: master
-  liquid_core: master
+  liquid_core: first-boot-hotspot
   setup: master
   web_ui: master

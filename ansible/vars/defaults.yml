@@ -1,5 +1,6 @@
 liquid_domain: liquid.example.org
 liquid_vpn: {server: {}, client: {config: null}}
+liquid_lan: {hotspot: {ssid: "liquid", password: "investigations"}}
 devel: false
 use_https: false
 
