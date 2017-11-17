@@ -9,7 +9,7 @@ class Platform_odroid_c2(Platform):
     def get_base_image(self):
         base_image_url = (
             'https://jenkins.liquiddemo.org/__images__/base/'
-            'ubuntu64-16.04-minimal-odroid-c2-20160815.img.xz'
+            'ubuntu64-16.04.3-minimal-odroid-c2-20171005.img.xz'
         )
         base_image = IMAGES / 'xenial-odroid_c2-minimal.img.xz'
         download(base_image_url, base_image)
