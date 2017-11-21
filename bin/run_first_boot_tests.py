@@ -54,7 +54,7 @@ class PyTestWrapper:
             subprocess.run([command], shell=True, check=True, env=env)
         pytest_cmd = [self.pytest, '--junit-xml', self.xml_file]
         print("+", " ".join(pytest_cmd))
-        subprocess.run(pytest_cmd, cwd=self.chdir, env=env, check=False)
+        subprocess.run(pytest_cmd, cwd=self.chdir, env=env, check=True)
 
 
 class CoreTest(PyTestWrapper):
@@ -79,11 +79,16 @@ class SetupTest(PyTestWrapper):
 
 
 def run_tests():
+    fail = False
     for test_cls in [CoreTest, SetupTest]:
         try:
             test_cls().run()
         except subprocess.CalledProcessError:
-            print("Failed to run", test_cls.__name__)
+            print(test_cls.__name__, "failed")
+            fail = True
+
+    if fail:
+        return 1
 
 
 def wait_for_first_boot(wait_mins=10):
@@ -112,4 +117,4 @@ def cat_first_boot_logs():
 if __name__ == '__main__':
     wait_for_first_boot()
     cat_first_boot_logs()
-    run_tests()
+    sys.exit(run_tests())

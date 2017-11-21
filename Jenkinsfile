@@ -35,11 +35,15 @@ node('cloud') {
         stage('CLOUD: Test and Archive') {
             parallel(
                 first_boot: {
-                    stage("CLOUD: Run first boot") {
-                        sh 'mkdir factory/images/liquid-cloud-x86_64'
-                        sh 'cp images/ubuntu-x86_64-raw.img factory/images/liquid-cloud-x86_64/disk.img'
-                        sh 'echo \'{"login": {"username": "liquid", "password": "liquid"}}\' > factory/images/liquid-cloud-x86_64/config.json'
-                        sh 'factory/factory --platform liquid-cloud-x86_64 run --smp 2 --memory 2048  --share .:/mnt/setup /mnt/setup/bin/run_first_boot_tests.py'
+                    try {
+                        stage("CLOUD: Run first boot") {
+                            sh 'mkdir factory/images/liquid-cloud-x86_64'
+                            sh 'cp images/ubuntu-x86_64-raw.img factory/images/liquid-cloud-x86_64/disk.img'
+                            sh 'echo \'{"login": {"username": "liquid", "password": "liquid"}}\' > factory/images/liquid-cloud-x86_64/config.json'
+                            sh 'factory/factory --platform liquid-cloud-x86_64 run --smp 2 --memory 2048  --share .:/mnt/setup /mnt/setup/bin/run_first_boot_tests.py'
+                        }
+                    }
+                    finally {
                         junit 'tests/results/*.xml'
                     }
                 },
