@@ -1,0 +1,6 @@
+#!/bin/bash
+set -ex
+
+echo 'liquid:liquid' | chpasswd
+adduser liquid sudo
+echo "liquid ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/liquid-nopasswd
