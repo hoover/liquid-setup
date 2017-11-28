@@ -45,7 +45,7 @@
     - supervisor
     - nginx
     - python3
-    - python-virtualenv
+    - virtualenv
     - iptables
     - build-essential
     - default-jre-headless
