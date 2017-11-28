@@ -105,4 +105,4 @@ class BaseBuilder:
 
     def build(self, image, tags):
         with self.open_target(image) as target:
-            self.run_ansible('image_chroot.yml', tags)
+            self.run_ansible('liquid.yml', tags)

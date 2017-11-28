@@ -98,7 +98,7 @@ To use HTTPS, create certificates using your preferred method (letsencrypt,
 self-signed).
 
 To enable HTTPS functionality in nginx, set `use_https: true` in
-`vars/config.yml` and re-run `ansible-playbook -i hosts server.yml`.  Then,
+`vars/config.yml` and re-run `ansible-playbook -i hosts liquid.yml`.  Then,
 supply all the certificate files under `/var/lib/liquid/https/certs/` and
 restart nginx.  To find what certificates are needed, run `grep -r /https/certs
 ./ansible/roles`.

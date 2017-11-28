@@ -18,6 +18,7 @@ node('arm64') {
         }
         stage('ODROID C2: Prepare the build') {
             sh 'cp jenkins-config.yml ansible/vars/config.yml'
+            sh 'touch ansible/vars/liquidcore.yml'
             sh 'mkdir images'
             sh "wget -q $liquid_prerequisites_odroid_c2_image -O images/pre.img.xz"
             sh 'xzcat images/pre.img.xz > images/ubuntu-odroid_c2-raw.img'

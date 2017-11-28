@@ -17,6 +17,7 @@ node('arm64') {
         }
         stage('ODROID C2: Build prerequisites image') {
             sh 'cp jenkins-config.yml ansible/vars/config.yml'
+            sh 'touch ansible/vars/liquidcore.yml'
             sh 'mkdir images'
             sh 'factory/factory run --smp 2 --memory 1024 --share setup:/mnt/setup --share images:/mnt/images /mnt/setup/bin/jenkins_build /mnt/setup/bin/build_image odroid_c2 --tags prerequisites'
         }

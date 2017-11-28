@@ -18,6 +18,7 @@ node('cloud') {
         }
         stage('CLOUD: Prepare the build') {
             sh 'cp setup/jenkins-config.yml setup/ansible/vars/config.yml'
+            sh 'touch setup/ansible/vars/liquidcore.yml'
             sh 'mkdir images'
             sh "wget -q $liquid_prerequisites_cloud_image -O images/pre.img.xz"
             sh 'xzcat images/pre.img.xz > images/ubuntu-x86_64-raw.img'
