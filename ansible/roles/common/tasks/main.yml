@@ -38,6 +38,7 @@
     name: "{{ item }}"
     state: latest
   with_items:
+    - sudo
     - ansible
     - curl
     - git
@@ -95,6 +96,14 @@
   user:
     name: liquid
     shell: /bin/bash
+
+- name: Add the liquid user to the sudo group
+  command: adduser liquid sudo
+
+- name: Configure passwordless sudo for liquid
+  copy:
+    content: "liquid ALL=(ALL:ALL) NOPASSWD: ALL\n"
+    dest: /etc/sudoers.d/liquid
 
 - name: Create the supervisor global config
   template:

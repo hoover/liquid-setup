@@ -2,6 +2,4 @@
 set -ex
 
 echo 'liquid:liquid' | chpasswd
-adduser liquid sudo
-echo "liquid ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/liquid-nopasswd
 sed -i '/PasswordAuthentication /c\PasswordAuthentication yes' /etc/ssh/sshd_config
