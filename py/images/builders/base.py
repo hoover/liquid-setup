@@ -77,6 +77,11 @@ class BaseBuilder:
                     yield target
 
     def prepare_chroot(self, target):
+        apt_conf_liquid = target.mount_point / 'etc/apt/apt.conf.d/liquid'
+        with apt_conf_liquid.open('w', encoding='utf8') as f:
+            print('APT::Install-Recommends "false";', file=f)
+            print('APT::Install-Suggests "false";', file=f)
+
         target.chroot_run(['apt-get', '-qq', 'update'])
         target.chroot_run(['apt-get', '-qq', 'install', '-y', 'python'],
                           stdout=subprocess.DEVNULL)
