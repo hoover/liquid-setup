@@ -7,7 +7,6 @@
         state: latest
       with_items:
         - tmux
-        - sudo
         - dnsutils
         - man
         - tcpdump
@@ -20,16 +19,8 @@
     - name: Set up a default password for the liquid user
       command: bash -c "echo liquid:liquid | chpasswd"
 
-    - name: Add the liquid user to the sudo group
-      command: adduser liquid sudo
-
     - name: Permit password sshd auth
       lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^#?PasswordAuthentication "
         line: "PasswordAuthentication yes"
-
-    - name: Configure passwordless sudo for liquid
-      copy:
-        content: "liquid ALL=(ALL:ALL) NOPASSWD: ALL\n"
-        dest: /etc/sudoers.d/liquid-devel
