@@ -15,6 +15,6 @@ git_repo_versions:
     h_client_build: master
   discover: master
   liquid_core: master
-  setup: master
+  setup: single-ansible
   web_ui: master
   ui_templates: master
