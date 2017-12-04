@@ -5,32 +5,27 @@ properties([
 ])
 
 node('arm64') {
-    def cloud_image = 'https://jenkins.liquiddemo.org/job/liquidinvestigations/job/factory/job/master/lastSuccessfulBuild/artifact/cloud-arm64-image.tar.xz'
     def liquid_prerequisites_odroid_c2_image = 'https://jenkins.liquiddemo.org/job/setup-prerequisites-arm64/job/master/lastSuccessfulBuild/artifact/liquid-odroid_c2-arm64-prerequisites.img.xz'
     stage('ODROID C2: Host Debug Information') {
         sh 'set -x && hostname && uname -a && free -h && df -h'
     }
-    deleteDir()
-    checkout scm
+    dir('setup') {
+        checkout scm
+    }
     try {
-        stage('ODROID C2: Build a Factory & Prepare Cloud Image') {
-            sh 'git clone https://github.com/liquidinvestigations/factory'
-            sh 'mkdir -pv factory/images/cloud-arm64/'
-            dir('factory/images/cloud-arm64') {
-                sh "wget -q $cloud_image -O tmp.tar.xz"
-                sh 'xzcat tmp.tar.xz | tar x'
-                sh 'rm tmp.tar.xz'
-            }
+        stage('ODROID C2: Prepare factory') {
+            sh "#!/bin/bash\npython3 <(curl -sL https://github.com/liquidinvestigations/factory/raw/master/install.py) factory"
         }
         stage('ODROID C2: Prepare the build') {
             sh 'cp jenkins-config.yml ansible/vars/config.yml'
+            sh 'touch ansible/vars/liquidcore.yml'
             sh 'mkdir images'
             sh "wget -q $liquid_prerequisites_odroid_c2_image -O images/pre.img.xz"
             sh 'xzcat images/pre.img.xz > images/ubuntu-odroid_c2-raw.img'
             sh 'rm images/pre.img.xz'
         }
         stage('ODROID C2: Build Image') {
-            sh 'factory/factory run --smp 2 --memory 1024 --share .:/mnt/setup --share images:/mnt/images /mnt/setup/bin/jenkins_build /mnt/setup/bin/build_image odroid_c2 --image /mnt/images/ubuntu-odroid_c2-raw.img'
+            sh 'factory/factory run --smp 2 --memory 1024 --share setup:/mnt/setup --share images:/mnt/images /mnt/setup/bin/jenkins_build /mnt/setup/bin/build_image odroid_c2 --image /mnt/images/ubuntu-odroid_c2-raw.img'
         }
         stage('ODROID C2: Archive Raw Image') {
             sh 'xz -1 < images/ubuntu-odroid_c2-raw.img > liquid-odroid_c2-arm64-raw.img.xz'

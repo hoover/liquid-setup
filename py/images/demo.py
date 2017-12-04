@@ -61,7 +61,7 @@ class DemoBuilder(Builder_cloud):
         run([
             'ansible-playbook',
             '-i', 'hosts',
-            'image_chroot.yml',
+            'liquid.yml',
         ], cwd=str(setup_path / 'ansible'))
 
     def kill_testdata(self, target):
