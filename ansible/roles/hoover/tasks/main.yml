@@ -117,7 +117,8 @@
 - name: Download Apache Tika
   get_url:
     dest: /opt/hoover/tika-server.jar
-    url: http://apache.javapipe.com/tika/tika-server-1.17.jar
+    url: https://jenkins.liquiddemo.org/__images__/base/tika-server-1.17.jar
+    checksum: "sha1:8f55705c8226c6efe2c095fee10bdefdda21b7e8"
   tags:
     - prerequisites
 
