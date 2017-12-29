@@ -5,6 +5,7 @@ import splinter
 import pytest
 from flaky import flaky
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.common.exceptions import WebDriverException
 
 NOAPPS = bool(os.environ.get('NOAPPS'))
 
@@ -121,10 +122,20 @@ def wait_for_reconfigure():
 @pytest.fixture(params=BROWSERS)
 def browser(request):
     browser_name = request.param
-    with splinter.Browser(browser_name, headless=True, wait_time=15, **BROWSER_OPTS[browser_name]) as browser:
-        browser.driver.set_window_size(1920, 1080)
-        browser.visit(URL)
-        yield browser
+    for _ in range(3):
+        try:
+            with splinter.Browser(browser_name,
+                                  headless=True,
+                                  wait_time=15,
+                                  **BROWSER_OPTS[browser_name]) as browser:
+                browser.driver.set_window_size(1920, 1080)
+                browser.visit(URL)
+                yield browser
+                break
+        except WebDriverException:
+            continue
+    else:
+        pytest.fail("Got WebDriverException 3 times in a row")
 
 
 @pytest.mark.parametrize('browser', [BROWSERS[0]], indirect=True)
