@@ -122,20 +122,25 @@ def wait_for_reconfigure():
 @pytest.fixture(params=BROWSERS)
 def browser(request):
     browser_name = request.param
-    for _ in range(3):
+    retries = 3
+    while retries > 0:
+        retries -= 1
         try:
-            with splinter.Browser(browser_name,
-                                  headless=True,
-                                  wait_time=15,
-                                  **BROWSER_OPTS[browser_name]) as browser:
+            with splinter.Browser(
+                        browser_name,
+                        headless=True,
+                        wait_time=15,
+                        **BROWSER_OPTS[browser_name],
+                    ) as browser:
                 browser.driver.set_window_size(1920, 1080)
                 browser.visit(URL)
                 yield browser
-                break
+                return
         except WebDriverException:
-            continue
-    else:
-        pytest.fail("Got WebDriverException 3 times in a row")
+            if retries > 0:
+                continue
+            else:
+                raise
 
 
 @pytest.mark.parametrize('browser', [BROWSERS[0]], indirect=True)
