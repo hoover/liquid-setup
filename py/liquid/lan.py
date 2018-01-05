@@ -107,3 +107,6 @@ def first_boot():
 
     print('starting dnsmasq for lan')
     subprocess.run(['supervisorctl', 'start', 'lan-dnsmasq'], check=True)
+
+    print('reloading nginx')
+    subprocess.run(['service', 'nginx', 'reload'], check=True)
