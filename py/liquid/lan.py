@@ -1,3 +1,5 @@
+from pathlib import Path
+import subprocess
 from .network_manager import nmcli
 from .network_manager import get_connections
 from .network_manager import get_connection_properties
@@ -86,3 +88,22 @@ def configure_lan(vars):
         uuid = bridge_interfaces['lan'].get(ETHERNET_INTERFACE)
         if uuid:
             print(nmcli('connection', 'del', uuid))
+
+
+def first_boot():
+    if Path('/var/lib/liquid/lan/eth0_no_dhcp').exists():
+        print("Skipping lan server (hotspot and eth0 dhcp)")
+        return
+
+    configure_lan({
+        'liquid_lan': {
+            "dhcp_range": "10.103.0.100,10.103.0.200,72h",
+            "eth": True,
+            "hotspot": {"ssid": "", "password": ""},
+            "ip": "10.103.0.1",
+            "netmask": "255.255.255.0",
+        },
+    })
+
+    print('starting dnsmasq for lan')
+    subprocess.run(['supervisorctl', 'start', 'lan-dnsmasq'], check=True)
