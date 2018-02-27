@@ -49,10 +49,16 @@ supervisorctl start hoover-elasticsearch
 es_url="http://localhost:14352"
 wait_url $es_url
 
-sudo -u liquid-apps bash <<EOF
-set -x
-/opt/hoover/bin/hoover snoop resetindex testdata
-EOF
+X=0
+until [ $X -ge 5 ]; do
+    sudo -u liquid-apps/opt/hoover/bin/hoover snoop resetindex testdata && break
+    ((X=X+1))
+    sleep 3
+done
+if [ $X -ge 5 ]; then
+    exit 1
+fi
+
 
 snoop_url="http://localhost:11941"
 wait_url $snoop_url/testdata/json
